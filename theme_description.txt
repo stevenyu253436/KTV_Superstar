@@ -1,0 +1,2 @@
+Selected Theme: themes/default
+Image Path: C:/Users/Administrator/KSongloverNET/themes/default/0.png

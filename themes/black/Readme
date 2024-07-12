@@ -1,0 +1,72 @@
+說明:
+
+此文件為佈景主題說明檔, 你可利用有支援HTML MAP編輯功能的軟體進行佈景主題的元件調整或設計。
+其主題的利用HTML中的MAP的Tag, 與元件主要與Area為主, 說明及擴充如下。
+
+注意所有的屬性及屬性值都會自動轉為小寫, 所以最好為小寫英文字母。
+
+0. <img> 使用說明
+
+	範例：
+		<img src="0.png" oversrc="0.png" downsrc="0.png" width="1440" height="900" border="0" usemap="#Map" desc="主畫面"/>
+
+	相關參數說明如下:
+
+		src : 背景圖片
+		oversrc : mouseover 圖片
+		overdown : mousedown 圖片
+
+		一般使用三張， 沒指定oversrc及overdown時， 自動取得.mouseover.png, .mousedown.png
+
+
+1. <area> 屬性說明
+	id : * 物件名稱(必要欄位, 無設定時, 系統會自動加入一個隨機id, 即為此元件的識別名稱Name, 注意尾部.right, .left為保留字元)
+	class : 物件類別, 目前支援的有 radiobutton(jquery未實作）, switchbutton(jquery未實作）, button(內定值), slidebutton(jquery未實作）, label, clock, background(背景元件)。
+	class(額外) : marquee, image 此二類為特殊物件, image使用src指定圖案。
+	value : 給予Text的初值。                       
+	group : 是否為群組, 群組名稱。
+	target : 流程控管, 按下物件時, 將跳至此layer, 可用全域layer設定或單獨設定, back為保留字, 可回到上一層(只限一層)
+	layer : 物件層次, 以逗號區隔, 可顯示層級, 內定值為「""」, 空白即任何時候皆顯示, 可用全域layer設定或單獨設定
+	layerdisable : 物件層次, 是否可操作, 如不能操作, 請加入此區(可看到但不能操作)
+	align : 對齊模式, 有以下種類topcenter、topleft、topright、middlecenter、middleleft、middleright、bottoncenter、bottomleft、bottomright"
+	coords : 位置, 與map屬性相同(目前clock為固定大小不能調整)
+	size : 字型大小, 內定為14
+	font : 字型, 內定為"微軟正黑體"
+	color : 字型顏色, 內定為黑色
+	mode : marquee 專用屬性, 可設定為dynamic或static二種, 內定為static
+	opacity : 半透明， 0.0～1.0 , 此為整個容器有別於sytle只改文字部份(vb.net未實作)
+	style : html標準樣式，該物件層級（vb.net未實作)
+	textstyle : html標準樣式，文字專用,字型屬性設定（vb.net未實作)
+
+	(以下jquery版尚未實作）
+
+	src、mouseover、mousedown : slidebutton專用屬性, 設定上方的按鈕的三種狀況, src是一定要設定的
+	binding : 用於group群組使用, 於"slidebutton"及"button"時可指定為group上下頁之控制項, 內容為"{groupname}.{type}", type=(left, right, slide, pageinfo, pageno, pagecount)。
+	direct : group page 翻頁方向, 二個設定值, row(左至右)、column(上至下), 內定為column。
+	gapsize : 用於group群組換頁使用, Gap的大小, 內定值為20。
+	enablewithdata : 是否要有資料時方能可用狀態。(即必須指定ID時, 如為group成員則內定為true, 其他則為false)
+	gapcolor : 用於group群組換頁使用, 內定為黑色。
+	eventlink : 指定事件觸發的真屬物件, 做為連結, 可指定多個物件id, 以逗號區隔。
+	field : 每個元件可自定義Label欄位(擴充欄位), 可利用此屬性進行文字及圖片之擴充用途。
+		其語法為「id, top, offset, width, height, align, font, size, color, imagealign,backcolor」, 
+		id、offset、width 為必要欄位, height為零時,與父元件同高, imagealign參數與align同, 
+		欄位未設也請留「,」隔開, 最後backcolor是可省略, 內定為透明的, 允許多個field利用;隔開。
+
+	(以下jquery特殊class, 會直接轉譯）
+	video, iframe, image, input, textarea, flash
+
+2. <debug> 開啟除錯功能, 會在物件加上框
+	<debug value='false'/>
+
+3. <layer> 未指定時相關layer的定義初始值, 可定義layer及gotolayer二個設定值, 以簡化設定
+	<layer default='0' gotolayer='0-1'/>
+
+4. <page> 取得新的佈景主題設定設定
+	<page src="theme name"/>
+
+5. 開發備忘說明
+
+(vb.net版本)
+
+1). 任何修改資料規格, 必須進行eeeButton的clone及clear method修改。
+2). 動態資料的radiobutton還沒完成, 必須要多一個記錄ID才可行, 目前記object id, 無法做到。

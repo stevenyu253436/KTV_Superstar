@@ -1,0 +1,41 @@
+<html>
+<meta charset="utf-8"> 
+<head>
+<script type="text/javascript" src="../jquery.1.8.2.min.js"></script>
+
+<script>
+jQuery(function($) {
+	console.info("aaaa");
+	$("body").append('<div id="test" style="position: absolute; left: 130px; top: 130px; width: 100px; line-height: 100px; height: 100px; overflow: auto; z-index: 2;"></div>');
+
+	
+	$("#test").append("<div id=msg>1</div>test1<br>test2<br>test3<br>test4<br>test5<br>test6<br>test7<br>test1<br>test2<br>test3<br>test4<br>test5<br>test6<br>test7<br>test1<br>test2<br>test3<br>test4<br>test5<br>test6<br>test7<br>");
+
+	/*
+	var lastScroll = $("#test").contents().scrollTop();
+
+
+	console.info("LastScroll:" + lastScroll);
+	
+	
+	$("#test").contents().scroll(function(e) {
+	    var newScroll = $("#test").contents().scrollTop();
+	    console.log(newScroll - lastScroll);
+	    lastScroll = newScroll;
+	    $("#test").contents().find("#msg").text(lastScroll);
+	});
+	*/
+	
+	$("#msg").hover(function() {
+		console.info("fun1");
+	}, function() {
+		console.info("fun2");
+	});
+	
+	
+});
+</script>
+
+</head>
+</html>
+

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        <title>超級巨星歡唱網路系統</title>
+    </head>
+
+	<!--from wilden0424@gmail.com fixed ios platforms-->
+    <link rel="apple-touch-icon" href="img/logo.png"/>
+    <link rel="apple-touch-icon-precomposed" href="img/logo.png"/>
+    <link rel="apple-touch-startup-image" href="img/startup.png"/>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script>
+    // Mobile Safari in standalone mode
+	if(("standalone" in window.navigator) && window.navigator.standalone){
+	    var noddy, remotes = true;
+	    document.addEventListener('click', function(event) {
+	        noddy = event.target;
+	        while(noddy.nodeName !== "A" && noddy.nodeName !== "HTML") {
+	            noddy = noddy.parentNode;
+	        }
+	        if('href' in noddy && noddy.href.indexOf('http') !== -1 && (noddy.href.indexOf(document.location.host) !== -1 || remotes))
+	        {
+	            event.preventDefault();
+	            document.location.href = noddy.href;
+	        }
+	    },false);
+	}
+    </script>
+    <!--end fixed-->
+    
+    
+    <body style="background-color:#000000">
+    	<img id="applogo" src="img/logo.png" style="position: fixed;  top: 50%;  left: 50%;  transform: translate(-50%, -50%);"/>
+        <link href="css/index.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+        
+        <script type="text/javascript" src="js/ksonglover.js"></script>
+         <script>
+        	require(["app"], function(app){
+        		app.init();
+			});
+        </script>
+    </body>
+</html>

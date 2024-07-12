@@ -1,0 +1,192 @@
+/*!
+ * NatureFace UI JavaScript Library v2.0
+ * http://NatureFace.ksonglover.com/
+ *
+ * Copyright 2003~2013, KSonglover
+ * 
+ * 此程式主要用途為產生互動式web應用程式之操作介面。
+ * 並搭配一些簡單的操作，就可完成一個應用程式互動介面。
+ * 此程式「使用創用CC 姓名標示─非商業性─禁止改作 3.0 台灣 授權條款」
+ * 如做為商業用途，請利用Paypal進行付費授權，另外任何使用請保留此註記。
+ * 
+ * Date: $LastChangedDate: 2012-12-12 11:32:20 +0800 (三, 12 12月 2012) $ 
+ * Revision : $Rev: 1882 $
+ */
+
+/*
+
+Method : jQuery.NatureFace.init(theme, fullscreen, prefix, firsttarget, touchscreen, top, left, width, height, rootdiv)
+
+	description: 初始化佈景主題
+		
+	parameters:
+	
+	<theme> : 字串時為theme名稱, 如為物件則使用{}設定以下參數
+	<fullscreen> : set fullscreen (auto, 如為true, top, left, width及height失效)
+	[prefix] : folder prefix path
+	[firsttarget] : first target (default: theme), 用途refresh機制時，因為reinitialize, 所以必須指定firsttarget
+	[touchscreen] : 強制指定是否為觸控(未指定將自動判斷, 有些紅外線觸控可能判斷錯誤)
+	[top] : 定位點top
+	[left] : 定位點left
+	[width] : 定位點width(與height同時存在方能生效)
+	[height] : 定位點height(與width同時存在方能生效)
+	[rootdiv] : 放入指定的div element
+
+Method : jQuery.NatureFace.target(layer)
+
+	description: 跳至指定layer
+
+	parameters:
+	
+	<layer> : goto the layer target	
+
+Method : jQuery.NatureFace.layer()
+
+	description: 取得目前layer
+
+Method : jQuery.NatureFace.listener(key, function(data))
+
+	description: 監聽事件
+
+	parameters:
+	
+	<key> : event name : "target"
+
+	<function> : trigger function
+	<data> : event data
+
+
+Method : jQuery.NatureFace.removeListener(key, function(data))
+
+	description: 移除監聽事件
+
+	parameters:
+	
+	<key> : event name : "target"
+
+	<function> : trigger function
+	<data> : event data
+
+Method : jQuery.NatureFace.script(url)
+
+	description: 動態載入脚本
+
+	parameters:
+
+	<url> : dynamic load javascript file (js)
+
+Method : jQuery.listing(group, url, sub_update(item, data), sub_updatepage(currentpage, allpage))
+
+	description: 觸控式list
+	
+	relation attrs: binding, group,
+	
+	parameters:
+
+	<group> : group name
+	<url> : http url (JSON Data), merge pageno , ex : url + pageno (use rest method)
+		ex : {"recordcount":22048,"pagecount":2205,"pagesize":10,"absolutepage":2,"absoluteposition":11,"items":[{"songno":"00011","songname":"\u9001\u5225"},{"songno":"00012","songname":"\u665A\u6B4C"},{"songno":"00013","songname":"\u91CE\u9910"},{"songno":"00014","songname":"\u8CC0\u5E74"},{"songno":"00015","songname":"\u6416\u8239"},{"songno":"00016","songname":"\u873B\u8713"},{"songno":"00017","songname":"\u6A05\u6A39"},{"songno":"00018","songname":"\u8774\u8776"},{"songno":"00019","songname":"\u8778\u725B"},{"songno":"00020","songname":"\u71D5\u5B50"}]}
+	<page> : absolute page
+	<sub_update> : item update function (itemobject, data)
+	<sub_updatepage> : page update function (currentpage, allpage)
+
+Method : jQuery.binding(group, url, sub_update(item, data), sub_clear(item), pageno)
+	
+	description: 表格式list
+
+	relation attrs: binding, group, cols, rows 
+	
+	parameters:
+
+	<group> : group name
+	<url> : http url (JSON Data), merge pageno , ex : url + pageno
+		ex : {"recordcount":22048,"pagecount":2205,"pagesize":10,"absolutepage":2,"absoluteposition":11,"items":[{"songno":"00011","songname":"\u9001\u5225"},{"songno":"00012","songname":"\u665A\u6B4C"},{"songno":"00013","songname":"\u91CE\u9910"},{"songno":"00014","songname":"\u8CC0\u5E74"},{"songno":"00015","songname":"\u6416\u8239"},{"songno":"00016","songname":"\u873B\u8713"},{"songno":"00017","songname":"\u6A05\u6A39"},{"songno":"00018","songname":"\u8774\u8776"},{"songno":"00019","songname":"\u8778\u725B"},{"songno":"00020","songname":"\u71D5\u5B50"}]}
+	<page> : absolute page
+	<sub_update> : item update function (itemobject, data)
+	<sub_clear> : item clear function (itemobject)
+	[pageno] : assign page no , defaul : 1
+
+Method : jQuery.NatureFace.marquee(url, function)
+
+	description: 跑馬燈
+
+	parameters:
+
+	<url> : http url (JSON Data or Other format(function))
+		response data : {"effect":"(fade|scrollRight|scrollLeft|scrollUp|scrollDown)", "speed":ms, "delay":ms, items:[{"msg":"Welcome to jquery.NatureFace.js"},{"msg":"Change GUI Design Method..."}]}
+	[function(data)] : json handler
+		data handler and use marqueeItem to add marquee items
+
+	global variables:	
+		$.NatureFace.marquee.effect
+		$.NatureFace.marquee.speed
+		$.NatureFace.marquee.delay
+
+
+Method : jQuery.NatureFace.marqueeItem(msg)
+
+	description: 跑馬燈項目
+
+	parameters:
+
+	<msg> : add Marquee item
+
+Method : jQuery.NatureFace.loading(b, target, opt)
+
+	description: 讀取中動態小圖
+
+	parameters:
+
+	<b> : true/false
+	<target> : 存放動態載入的div容器
+	[opt] : see also : http://fgnass.github.com/spin.js/
+		{
+		  lines: 13, // The number of lines to draw
+		  length: 7, // The length of each line
+		  width: 4, // The line thickness
+		  radius: 10, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  color: '#ffff00', // #rgb or #rrggbb
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2000000000, // The z-index (defaults to 2000000000)
+		  top: 'auto', // Top position relative to parent in px
+		  left: 'auto' // Left position relative to parent in px
+		}
+
+Method : jQuery.NatureFace.refresh()
+
+	description: 重新整理(重新執行init及target至目前的layer, 如發現狀態不對，必須自行處理)
+
+Method : jQuery.NatureFace.istouch()
+
+	description: 判斷是否為觸控, 如init時強制指定時, 即取得強制性值, 否則為系統值
+
+Method : jQuery.NatureFace.hide()
+
+Method : jQuery.NatureFace.show()
+
+取得NatureFace 環境設定值：
+
+$.NatureFace.settings = {
+			theme	 		: 主題
+			fullscreen	 	: 是否全螢幕
+			prefix			: template prefix path
+			firsttarget		: 第一個target
+			touch			: 是否支持觸控
+			top				: 座標top
+			left			: 座標left
+			width			: 寬度 
+			height			: 高度 
+			divName			: 主div容器
+			div				: 主div容器(含#)
+			hasSize			: 是否有自定義大小
+			hide			: 是否hide
+			self			: this
+}
+	
+*/

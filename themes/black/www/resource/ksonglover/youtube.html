@@ -1,0 +1,21 @@
+<html>
+<layer default="youtube,youtubeplayer"/>
+<debug value="false"/>
+<img src="default.png" border="0" usemap="#Map" width="1080" height="1920"/>
+<map name="Map" id="Map">
+  <!--youtube layer-->
+  <area shape="rect" coords="0,172,1079,542" group="youtubeList" rows="4" cols="1" color="white"/>
+  <area shape="rect" coords="17,158,1060,265" group="youtubekeywords"  rows="9" cols="1" color="white" layer="noshow" class="completeitem"/>
+  <area shape="rect" coords="17,24,1060,151" href="youtubesearchbg" opacity="1,1,1" style="font-size:20px;background-color: rgba(0, 0, 0, 0.5);-moz-box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);-webkit-box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);-webkit-border-radius: 6px;-moz-border-radius: 6px;border-radius: 6px;"/>
+  <area shape="rect" coords="50,24,590,145" href="youtubesearch" class="input" color="white" placeholder="Search YouTube..." style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="470,172,660,250" href="youtubePos" value="1 / 1" color="white" align="middlecenter" layer="noshow" autofill style="margin:0px;font-size:14px;background-color: rgba(0, 0, 0, 0.8);-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;"/>
+  
+  <!--buttons-->
+  <area shape="rect" coords="596,24,661,147" href="youtubecleardata" opacity="0.5,1,1" class="glyphicon glyphicon-remove" color="white" align="middlecenter" style="font-size:18px"/>
+  <area shape="rect" coords="664,24,729,147" href="youtubeLoved" opacity="0.5,1,1" class="glyphicon glyphicon-heart" color="white" align="middlecenter" style="font-size:18px"/>
+  <area shape="rect" coords="861,54,976,122" href="youtubeMV" opacity="0.5,1,1" value="官方" color="white" align="middlecenter" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;"/>
+  <area shape="rect" coords="738,54,857,122" href="youtubeKTV" opacity="0.5,1,1" value="KTV"  color="white" align="middlecenter" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;"/>
+  <area shape="rect" coords="976,24,1051,150" href="youtubeReturn" opacity="0.5,1,1" target="default" class="glyphicon glyphicon-home" color="white" align="middlecenter" style="font-size:18px"/>
+
+</map>
+</html>

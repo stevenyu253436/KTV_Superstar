@@ -1,0 +1,18 @@
+{
+  "name": "KSonglover",
+  "version": "0.0.1",
+  "window": {
+    "title": "KSonglover",
+    "icon": "link.png",
+    "toolbar": false,
+    "frame": true,
+    "width": 400,
+    "height": 600,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 600,
+    "max_width": 400,
+    "max_height": 600
+  },
+  "main": "index.html"
+}

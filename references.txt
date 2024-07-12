@@ -1,0 +1,16 @@
+Interop.WMPLib.dll
+AxInterop.WMPLib.dll
+System.Data.SQLite.dll
+EPPlus.dll
+Microsoft.IO.RecyclableMemoryStream.dll
+zxing.dll
+DirectShowLib.dll
+NAudio.dll
+Newtonsoft.Json.dll
+Microsoft.Ink.dll
+Mediafoundation.dll
+Vlc.DotNet.Core.dll
+Vlc.DotNet.Core.Interops.dll
+Vlc.DotNet.Forms.dll
+INIFileParser.dll
+Pinyin4net.dll

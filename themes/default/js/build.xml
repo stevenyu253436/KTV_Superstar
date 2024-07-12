@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project name="natureface" default="init" basedir=".">
+<property name="package" value="../../../../Package"/>
+<target name="init">
+	<echo message="js convert tools(select 2,3,4 options) --> http://javascriptobfuscator.com/default.aspx"/>
+	<concat destfile="./jquery.NatureFace-3party.js" encoding="utf-8" outputencoding="utf-8">
+		<filelist files="./iscroll.js"/>
+		<filelist files="./jquery.cycle.all.2.74.js"/>
+		<filelist files="./jquery.timers-1.2.js"/>
+		<filelist files="./spin.min.js"/>
+		<filelist files="./jquery.flash.js"/>
+		<filelist files="./jquery.marquee.js"/>
+		<filelist files="./jquery.jfeed.js"/>
+		<!--http://jmesnil.net/stomp-websocket/doc/-->
+		<!--https://raw.github.com/jmesnil/stomp-websocket/master/dist/stomp.js-->
+		<filelist files="./stomp.js"/>
+		<filelist files="./jquery.jplayer.min.js"/>
+		<filelist files="./amq_jquery_adapter.js"/>
+		<filelist files="./amq.js"/>
+		<filelist files="./jquery.amq.js"/>
+	</concat>
+	<exec executable="php">
+        	<arg value="tools/obfuscator.php"/>
+	        <arg value="./jquery.NatureFace.readme"/>
+	        <arg value="./jquery.NatureFace-orig.js"/>
+	        <arg value="./jquery.NatureFace.js"/>
+        </exec>
+</target>
+<target name="release">
+	<copy file="./jquery.NatureFace.js" todir="/tmp/xsquare/jquerynatureface/js" failonerror="false"/>
+</target>
+</project>

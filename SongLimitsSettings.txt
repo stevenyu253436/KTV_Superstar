@@ -1,0 +1,2 @@
+NewSongLimit: 100
+HotSongLimit: 100

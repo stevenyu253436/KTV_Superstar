@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Responsive Website</title>
+<!-- <link href="css/index.css" rel="stylesheet"> -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- <link href="css/bootstrap-theme.min.css" rel="stylesheet"> -->
+<style>
+  /* Reset some default styles */
+  body, h1, p {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden
+  }
+
+  /* Navigation header styles */
+  .nav-header {
+    display: flex; /* Use flexbox to align items */
+    justify-content: space-between; /* 分散对齐，确保子元素在容器两端和中间对齐 */
+    align-items: center; /* Vertically center items */
+    background: #333; /* Same background as the nav */
+    padding: 10px; /* Padding for the nav header */
+    width: 100%; /* 占满整个宽度 */
+  }
+
+  .hamburger {
+    cursor: pointer;
+    font-size: 24px; /* Icon size */
+    color: #fff; /* Icon color */
+    margin-right: 20px; /* Space between hamburger and title */
+  }
+
+  .title {
+    font-size: 24px; /* Matching the hamburger icon size */
+    color: #fff; /* Title color */
+    flex-grow: 1; /* Allows the title to take up the remaining space */
+  }
+
+  .glyphicon-search {
+    /* position: absolute; */
+    /* top: 10px; Adjust the value as needed */
+    /* right: 10px; Adjust the value as needed */
+    font-size: 24px; /* Adjust the size as needed */
+    color: #fff; /* Adjust the color as needed */
+    cursor: pointer;
+  }
+
+  .glyphicon-home {
+    /* position: absolute; */
+    /* top: 10px; Adjust the value as needed */
+    /* right: 10px; Adjust the value as needed */
+    font-size: 24px; /* Adjust the size as needed */
+    color: #fff; /* Adjust the color as needed */
+    cursor: pointer;
+  }
+
+  /* Set up a responsive container for your content */
+  .container {
+    position: relative;
+    width: 100vw; /* 使用视口宽度单位 */
+    height: 100vh; /* 使用视口高度单位 */
+    background-color: black;
+    color: white;
+    overflow: hidden; /* 防止内容溢出容器 */
+    margin: 0;
+    padding: 0;
+  }
+
+  .button {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .button:active {
+    background-color: #555; /* 按钮被按下时的背景颜色 */
+    transform: scale(0.98); /* 让按钮轻微缩小，模仿按下的效果 */
+  }
+
+  .sticker-panel {
+    display: none; /* This should hide the panel initially */
+    position: fixed;
+    bottom: 5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    min-width: 320px;
+    max-width: 95%;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    gap: 10px;
+  }
+
+  .sticker-panel img {
+    flex: 1 0 21%; /* Adjust the flex-basis to manage the size and fit 4 in a row */
+    cursor: pointer;
+    max-width: 100px; /* Maximum size for a sticker */
+    margin: 5px;
+  }
+
+  .sticker-panel img:active {
+    transform: scale(0.95); /* 缩小图片 */
+    opacity: 0.8; /* 降低透明度 */
+  }
+
+  .clicked {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+
+  /* Responsive Images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Navigation styles */
+  nav {
+    background: #333;
+    color: #fff;
+    padding: 10px;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: inline-block;
+  }
+
+  /* Apply a natural box layout model to all elements */
+  *, *:before, *:after {
+    box-sizing: border-box;
+  }
+
+  /* Responsive columns */
+  .column {
+    float: left;
+    width: 100%;
+  }
+
+  /* Responsive adjustments for smaller screens */
+  @media (max-width: 768px) {
+    .sticker-panel {
+      bottom: 10%; /* Adjust based on preference */
+      left: 50%; /* Center the panel horizontally */
+      transform: translateX(-50%); /* Adjust to center align the panel */
+      width: 50%; /* Make the panel about half the width of the screen */
+      min-width: 250px; /* Set a min-width to ensure usability */
+      max-height: 50vh; /* Make the panel about half the height of the screen, adjust if needed */
+      padding: 10px; /* Adjust padding for better layout */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: Add shadow for better visibility */
+      display: flex; /* Use flex layout to manage stickers */
+      flex-wrap: wrap; /* Allow stickers to wrap */
+      justify-content: center; /* Center stickers horizontally */
+      align-items: center; /* Center stickers vertically */
+      gap: 10px; /* Add gap between stickers */
+      overflow: auto; /* Allow scrolling if content overflows */
+    }
+
+    .sticker-panel img {
+      flex: 1 0 46%; /* Adjust the flex-basis to manage the size, making stickers larger */
+      max-width: 120px; /* Adjust max-width for sticker images */
+      margin: 5px; /* Adjust margin around stickers */
+    }
+
+    .sticker-panel img:active {
+      transform: scale(0.95); /* 缩小图片 */
+      opacity: 0.8; /* 降低透明度 */
+    }
+  }
+
+  /* For tablet devices */
+  @media (min-width: 769px) {
+    .sticker-panel {
+      max-width: 80%; /* Limit width on larger screens */
+      max-height: 80vh; /* Limit height to ensure it fits without scroll */
+      padding: 20px; /* Slightly larger padding */
+    }
+    .sticker-panel img {
+      flex-basis: 22%; /* Adjust size to fit 4 stickers per row */
+    }
+    .sticker-panel img:active {
+      transform: scale(0.95); /* 缩小图片 */
+      opacity: 0.8; /* 降低透明度 */
+    }
+    .column {
+      width: 50%;
+    }
+  }
+
+  /* For desktop devices */
+  @media (min-width: 992px) {
+    .column {
+      width: 33.33%;
+    }
+  }
+
+  /* Clearfix for floating elements */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+  /* Footer styles */
+  footer {
+    display: none; /* This will hide the footer entirely */
+  }
+
+  /* 新添加的层样式 */
+  .layer {
+    display: none;
+  }
+
+  .active {
+    display: block;
+  }
+
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #333;
+    padding: 10px;
+    width: 100%;
+  }
+
+  .search-wrapper {
+    display: flex;
+    width: 80%; /* This will constrain the search bar to 80% of its parent's width. */
+    align-items: center;
+  }
+
+  #searchBox {
+    flex-grow: 1;
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 16px;
+    padding: 8px;
+    margin-right: 10px; /* This is okay to keep. */
+  }
+
+  .glyphicon-search {
+    cursor: pointer;
+    color: #fff;
+    /* No need for position absolute */
+    /* Set size if needed */
+    font-size: 24px;
+    padding: 8px;
+  }
+
+  .glyphicon-option-vertical {
+    cursor: pointer;
+    color: #fff;
+    /* No need for position absolute */
+    /* Set size if needed */
+    font-size: 24px;
+    padding: 8px;
+  }
+
+  .search-wrapper .dropdown {
+    position: relative;
+    display: inline-block; /* or block, depending on your layout */
+    writing-mode: horizontal-tb; /* 將文字排列方式設置為水平 */
+  }
+
+  .options-container {
+    position: absolute;
+    left: 50%; /* Adjust this value as needed to position the container */
+    top: 100%; /* Positions the container right below the glyph */
+    transform: translateX(-50%); /* Centers the container with the glyph */
+    background-color: #000; /* Set to black */
+    color: white; /* Set text color to white */
+    padding: 10px; /* Add some padding */
+    border-radius: 5px; /* Optional: rounds the corners of the options container */
+    display: flex; /* Use flexbox to lay out the buttons */
+    flex-wrap: wrap; /* Allow buttons to wrap to the next line */
+    justify-content: center; /* Center buttons horizontally */
+  }
+
+  .options-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px; /* Adds space between rows */
+  }
+
+  .option-button {
+    writing-mode: horizontal-tb; /* Explicitly set horizontal writing mode */
+    flex-grow: 1; /* Each button will grow to fill the row equally */
+    margin: 4px; /* A little space between buttons */
+    padding: 8px 12px; /* Padding for the buttons */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white; /* Text color for the buttons */
+    border: none; /* No border for the buttons */
+    cursor: pointer; /* Cursor to indicate clickable */
+    transition: background-color 0.2s; /* Transition for a hover effect */
+  }
+
+  /* Style your options */
+  .options-container button {
+    all: initial; /* Reset all styles */
+    margin: 4px; /* Margin around buttons */
+    color: white;
+    padding: 8px 12px; /* Padding inside buttons */
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer; /* Cursor to indicate clickable */
+    transition: background-color 0.2s; /* Transition for the hover effect */
+    writing-mode: horizontal-tb; /* 將文字排列方式設置為水平 */
+    text-align: center; /* Center text horizontally */
+    width: 100%; /* Make buttons expand full width */
+    flex-grow: 1;
+    box-sizing: border-box; /* Include padding in width */
+  }
+
+  .option-button:hover {
+    background-color: #333; /* Darken button on hover */
+  }
+
+  /* Ensure the container doesn't appear until triggered */
+  #optionsArea {
+      display: none;
+  }
+
+  #searchResults {
+    overflow-y: auto;
+    max-height: calc(100vh - 250px); /* 视口高度减去其他元素的高度和间距 */
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f2f2f2; /* 轻灰色背景 */
+    margin-top: 20px; /* 与搜索框保持一定距离 */
+    border-radius: 5px; /* 圆角边框 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 轻微的阴影效果 */
+  }
+
+  #searchResults div {
+    font-size: 18px; /* 增大字体大小 */
+    color: #333; /* 字体颜色 */
+    padding: 8px 0; /* 上下填充，无左右填充 */
+    border-bottom: 1px solid #ddd; /* 每项结果之间的分割线 */
+  }
+
+  #searchResults div:active {
+    background-color: #e9e9e9; /* 点击时的背景色变暗 */
+    transform: scale(0.98); /* 稍微缩小，给予按下的感觉 */
+  }
+
+  #searchResults div.active {
+    background-color: #e9e9e9; /* 点击时的背景色变暗 */
+    transform: scale(0.98); /* 稍微缩小，给予按下的感觉 */
+  }
+
+  #searchResults div:last-child {
+    border-bottom: none; /* 移除最后一个结果项的底部边框 */
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="buttonContainer">
+  <div id="defaultLayer" class="layer active">
+    <!-- 把 nav-header 包含进来 -->
+    <nav>
+      <div class="nav-header">
+        <div class="hamburger" onclick="toggleMenu()">☰</div>
+        <h1 class="title">超級巨星系統</h1>
+        <span class="glyphicon glyphicon-search" id="searchIcon"></span>
+      </div>
+    </nav>
+
+    <!-- Static buttons with position data -->
+    <button class="button" id="btnsongmute" data-x="795" data-y="850" data-width="255" data-height="211">靜音 ⊙</button>
+    <button class="button" id="btnmusicup" data-x="793" data-y="392" data-width="256" data-height="209">音量 ↑</button>
+    <button class="button" id="btnsongreplay" data-x="536" data-y="394" data-width="234" data-height="207">重唱 ↻</button>
+    <button class="button" id="btnmarquee" onclick="showMarqueeInput()" data-x="281" data-y="623" data-width="234" data-height="207">跑馬燈 ⇄</button>
+    <button class="button" id="btnorderpageup" data-x="25" data-y="395" data-width="234" data-height="208">已點 ↑</button>
+    <button class="button" id="btnpitchnormal" data-x="25" data-y="1095" data-width="175" data-height="322">原調♮</button>
+    <button class="button" id="btnorderpagedown" data-x="25" data-y="623" data-width="234" data-height="207">已點 ↓</button>
+    <button class="button" id="btnBarrage" onclick="toggleBarragePanel()" data-x="281" data-y="393" data-width="234" data-height="208">彈幕</button>
+    <button class="button" id="btnpitchdirectb3" data-x="670" data-y="1264" data-width="175" data-height="148">b3</button>
+    <button class="button" id="btnosdshow" data-x="536" data-y="623" data-width="235" data-height="207">顯示 ❆</button>
+    <button class="button" id="btnmusicdown" data-x="794" data-y="621" data-width="256" data-height="209">音量 ↓</button>
+    <button class="button" id="btnpitchdirect1" data-x="237" data-y="1097" data-width="175" data-height="148">#1</button>
+    <button class="button" id="btnaudiojoke" data-x="600" data-y="850" data-width="170" data-height="211">嘲笑</button>
+    <button class="button" id="btnaudiobad" data-x="409" data-y="850" data-width="170" data-height="211">噓聲</button>
+    <button class="button" id="btnaudiogood" data-x="219" data-y="850" data-width="170" data-height="211">掌聲</button>
+    <button class="button" id="btnaudiohoho" data-x="25" data-y="850" data-width="170" data-height="211">歡呼</button>
+    <button class="button" id="btnpitchdirectb2" data-x="454" data-y="1265" data-width="175" data-height="148">b2</button>
+    <button class="button" id="btnpitchwoman" data-x="881" data-y="1264" data-width="175" data-height="148">女♀</button>
+    <button class="button" id="btnpitchdirect3" data-x="670" data-y="1097" data-width="175" data-height="148">#3</button>
+    <button class="button" id="btnpitchman" data-x="881" data-y="1098" data-width="175" data-height="148">男♂</button>
+    <button class="button" id="btnsongback" data-x="25" data-y="1444" data-width="254" data-height="189">↶ 倒轉</button>
+    <button class="button" id="btnsongpause" data-x="296" data-y="1444" data-width="235" data-height="189">■ ►</button>
+    <button class="button" id="btnsongnext" data-x="549" data-y="1444" data-width="268" data-height="187">快轉 ↷</button>
+    <button class="button" id="btnsticker" onclick="toggleStickerPanel()" data-x="833" data-y="1444" data-width="223" data-height="187">貼圖</button>
+    <button class="button" id="btnpitchdirect2" data-x="454" data-y="1098" data-width="175" data-height="148">#2</button>
+    <button class="button" id="btnpitchdirectb1" data-x="237" data-y="1264" data-width="175" data-height="148">b1</button>
+    <button class="button" id="btnsongchannel" data-x="25" data-y="1671" data-width="490" data-height="211">原唱/伴唱</button>
+    <button class="button" id="btnsongcut" data-x="536" data-y="1671" data-width="521" data-height="211">切歌✗</button>
+    <!-- Continue with more buttons as needed -->
+
+    <!-- Inside your container, add a new div for the sticker panel -->
+    <div id="stickerPanel" class="sticker-panel">
+      <!-- Add your stickers here -->
+      <img src="superstar-pic/1-1.png" alt="Sticker 1" data-sticker-id="1-1" />
+      <img src="superstar-pic/1-2.png" alt="Sticker 2" data-sticker-id="1-2" />
+      <!-- More stickers as needed -->
+      <img src="superstar-pic/2-1.png" alt="Sticker 3" data-sticker-id="2-1" />
+      <img src="superstar-pic/2-2.png" alt="Sticker 4" data-sticker-id="2-2" />
+      <img src="superstar-pic/5-1.png" alt="Sticker 5" data-sticker-id="5-1" />
+      <img src="superstar-pic/5-2.png" alt="Sticker 6" data-sticker-id="5-2" />
+      <img src="superstar-pic/5-3.png" alt="Sticker 7" data-sticker-id="5-3" />
+      <img src="superstar-pic/5-4.png" alt="Sticker 8" data-sticker-id="5-4" />
+      <img src="superstar-pic/5-5.png" alt="Sticker 9" data-sticker-id="5-5" />
+      <img src="superstar-pic/5-6.png" alt="Sticker 10" data-sticker-id="5-6" />
+      <img src="superstar-pic/5-7.png" alt="Sticker 11" data-sticker-id="5-7" />
+      <img src="superstar-pic/5-8.png" alt="Sticker 12" data-sticker-id="5-8" />
+      <img src="superstar-pic/5-9.png" alt="Sticker 13" data-sticker-id="5-9" />
+      <img src="superstar-pic/5-10.png" alt="Sticker 14" data-sticker-id="5-10" />
+      <img src="superstar-pic/5-11.png" alt="Sticker 15" data-sticker-id="5-11" />
+      <img src="superstar-pic/5-12.png" alt="Sticker 16" data-sticker-id="5-12" />
+    </div>
+  </div>
+
+  <div id="searchLayer" class="layer">
+    <!-- 把 nav-header 包含进来 -->
+    <nav>
+      <div class="nav-header">
+        <!-- 使用 div 模仿输入框 -->
+        <div class="search-wrapper">
+          <input type="text" id="searchBox" placeholder="曲號/歌名/歌手/注音/拼音">
+          <!-- Change glyphicon-search to glyphicon-option-vertical -->
+          <!-- Wrap glyphicon and options-container in a div -->
+          <div class="dropdown">
+            <span class="glyphicon glyphicon-option-vertical" onclick="toggleOptionsDisplay()"></span>
+            <div id="optionsArea" class="options-container" style="display:none;">
+                <!-- Your options here -->
+                <!-- Row 1 -->
+                <div class="options-row">
+                  <button class="option-button" data-type="hot" onclick="sendOption('hot')">熱門</button>
+                  <button class="option-button" data-type="mandarin" onclick="sendOption('mandarin')">國語</button>
+                  <button class="option-button" data-type="taiwanese" onclick="sendOption('taiwanese')">台語</button>
+                  <button class="option-button" data-type="group" onclick="sendOption('group')">團體</button>
+                </div>
+                <!-- Row 2 -->
+                <div class="options-row">
+                  <button class="option-button" data-type="new" onclick="sendOption('new')">新歌</button>
+                  <button class="option-button" data-type="male" onclick="sendOption('male')">男生</button>
+                  <button class="option-button" data-type="female" onclick="sendOption('female')">女生</button>
+                  <button class="option-button" data-type="duet" onclick="sendOption('duet')">對唱</button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <span class="glyphicon glyphicon-home" id="homeIcon"></span>
+      </div>
+    </nav>
+
+    <div id="searchResults"></div>
+
+    <button class="button" id="btnsongchannel" data-x="25" data-y="1671" data-width="490" data-height="211">原唱/伴唱</button>
+    <button class="button" id="btnsongcut" data-x="536" data-y="1671" data-width="521" data-height="211">切歌✗</button>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <!-- Content removed -->
+  </div>
+</footer>
+
+<script>
+function toggleMenu() {
+  var navLinks = document.querySelectorAll('nav a');
+  navLinks.forEach(function(link) {
+    link.style.display = link.style.display === 'block' ? 'none' : 'block';
+  });
+}
+
+const originalWidth = 1080; // Original width for reference
+const originalHeight = 1920; // Original height for reference
+
+function sendSignal(buttonId, marqueeText = '') {
+  // 示例数据，您可以根据需要调整
+  const data = {
+    buttonId: buttonId,
+    action: 'clicked',
+    text: marqueeText // 新增字段，用于发送跑马灯文本
+  };
+
+  // 使用 fetch API 发送数据到服务器
+  fetch('/signal', {
+    method: 'POST', // 或者其他方法，取决于您的服务器配置
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8', // 显式指定字符集为 UTF-8
+    },
+    body: JSON.stringify(data),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Success:', data);
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+}
+
+function toggleBarragePanel() {
+  const marqueeText = prompt("請輸入彈幕內容:");
+  if (marqueeText) {
+    sendSignal('btnBarrage', marqueeText);
+  }
+}
+
+function showMarqueeInput() {
+  const marqueeText = prompt("請輸入跑馬燈文本:");
+  if (marqueeText) {
+    sendSignal('btnmarquee', marqueeText);
+  }
+}
+
+function toggleStickerPanel() {
+  var panel = document.getElementById('stickerPanel');
+  panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // 确保stickerPanel初始状态为隐藏
+  var panel = document.getElementById('stickerPanel');
+  if (panel.style.display !== 'none') {
+    panel.style.display = 'none';
+  }
+
+  // 其他初始化代码
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  // 其他初始化代码...
+
+  var stickers = document.querySelectorAll('#stickerPanel img');
+  stickers.forEach(function(sticker) {
+    sticker.addEventListener('click', function() {
+      var stickerId = this.getAttribute('data-sticker-id');
+      sendStickerSignal(stickerId);
+    });
+  });
+});
+
+document.querySelectorAll('#stickerPanel img').forEach(function(sticker) {
+  sticker.addEventListener('touchstart', function() {
+    this.style.transform = 'scale(0.95)';
+    this.style.opacity = '0.8';
+  });
+  sticker.addEventListener('touchend', function() {
+    // 恢复原样式
+    this.style.transform = '';
+    this.style.opacity = '';
+  });
+});
+
+function sendStickerSignal(stickerId) {
+  // 在这里编写发送信号的代码
+  // 以下是使用fetch API的示例，根据您的实际后端实现适当调整
+  fetch('/send-sticker', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify({ stickerId: stickerId }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('Sticker sent successfully', data);
+  })
+  .catch(error => {
+    console.error('Error sending sticker:', error);
+  });
+}
+
+function adjustButtons() {
+  const container = document.getElementById('buttonContainer');
+  const scaleFactorW = container.offsetWidth / originalWidth;
+  const scaleFactorH = container.offsetHeight / originalHeight;
+
+  const buttons = container.getElementsByClassName('button');
+  Array.from(buttons).forEach(btn => {
+    const x = btn.getAttribute('data-x');
+    const y = btn.getAttribute('data-y');
+    const width = btn.getAttribute('data-width');
+    const height = btn.getAttribute('data-height');
+
+    btn.style.left = (x * scaleFactorW) + 'px';
+    btn.style.top = (y * scaleFactorH) + 'px';
+    btn.style.width = (width * scaleFactorW) + 'px';
+    btn.style.height = (height * scaleFactorH) + 'px';
+
+    // 添加点击事件监听器
+    btn.addEventListener('click', function() {
+      sendSignal(this.id); // 使用按钮的 ID 调用 sendSignal 函数
+    });
+  });
+}
+
+// 确保调整按钮和添加事件监听器的操作在页面加载完毕后执行
+document.addEventListener('DOMContentLoaded', function() {
+  adjustButtons();
+  window.addEventListener('resize', adjustButtons);
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  var searchIcon = document.getElementById('searchIcon');
+  searchIcon.addEventListener('click', function() {
+    toggleLayer('searchLayer');
+  });
+});
+
+function toggleLayer(layerId) {
+  // 先隐藏所有层
+  var layers = document.getElementsByClassName('layer');
+  for (var i = 0; i < layers.length; i++) {
+    layers[i].classList.remove('active');
+  }
+
+  // 如果有需要显示的层，显示它
+  if (layerId) {
+    var layerToShow = document.getElementById(layerId);
+    if (layerToShow) {
+      layerToShow.classList.add('active');
+    }
+  }
+}
+
+function performSearch() {
+  var searchBox = document.getElementById('searchBox');
+  var query = searchBox.value;
+
+  const resultsContainer = document.getElementById('searchResults');
+  
+  // 如果搜索框为空，则清除搜索结果并退出函数
+  if (!query) {
+    resultsContainer.innerHTML = '';
+    return; // 不继续执行后面的代码
+  }
+
+  // 假设 '/search' 是你的API端点
+  fetch('/search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+    body: JSON.stringify({ query: query }),
+  })
+  .then(response => response.json())
+  .then(data => displayResults(data))
+  .catch(error => console.error('Error:', error));
+}
+
+// 为搜索框添加事件监听器
+document.getElementById('searchBox').addEventListener('input', performSearch);
+
+function toggleOptionsDisplay() {
+    var optionsArea = document.getElementById('optionsArea');
+    optionsArea.style.display = optionsArea.style.display === 'block' ? 'none' : 'block';
+}
+
+// Add this event listener to your glyphicon-option-vertical
+// document.querySelector('.glyphicon-option-vertical').addEventListener('click', toggleOptionsDisplay);
+
+function sendOption(type) {
+    const resultsContainer = document.getElementById('searchResults');
+    resultsContainer.innerHTML = 'Loading...';  // 显示加载状态
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/api/get-songs-by-type", true);  // 修改为你的实际API端点
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({ type: type }));  // 发送请求体，包含类型参数
+
+    xhr.onload = function() {
+        if (this.status === 200) {
+            try {
+                const data = JSON.parse(this.responseText);
+                displayResults(data);  // 使用服务器返回的数据显示结果
+            } catch (error) {
+                console.error('Error parsing JSON:', error);
+                resultsContainer.innerHTML = 'Error loading songs.';
+            }
+        } else {
+            console.error("Server response:", this.status, this.statusText);
+            resultsContainer.innerHTML = 'Failed to load songs.';
+        }
+    };
+
+    xhr.onerror = function() {
+        console.error("Request failed");
+        resultsContainer.innerHTML = 'Request failed to reach the server.';
+    };
+}
+
+function performQuickSong(value, type) {
+    // Your logic to handle quick song selection
+}
+
+function displayResults(data) {
+  const resultsContainer = document.getElementById('searchResults');
+  resultsContainer.innerHTML = ''; // 清空现有的搜索结果
+
+  data.forEach(song => {
+    // 创建一个div元素来展示每首歌的信息
+    const songElement = document.createElement('div');
+    // songElement.classList.add('song-result'); // 为了样式美观，可以给这个div添加一个class
+    // 设置div的内容为歌手名和歌名，中间用" - "隔开
+    songElement.textContent = `${song.SongNumber} - ${song.ArtistA} - ${song.Song}`;
+    songElement.classList.add("search-result-item"); // 可以为每个结果项添加特定的类以便样式控制
+    
+    // 检查ArtistB是否为空，然后设置文本内容
+    let displayText = `${song.SongNumber} - ${song.ArtistA}`;
+    if (song.ArtistB && song.ArtistB.trim() !== '') {
+      displayText += ` & ${song.ArtistB}`;
+    }
+    displayText += ` - ${song.Song}`;
+    songElement.textContent = displayText;
+
+    songElement.addEventListener('click', () => {
+      // 这里发送选中的歌曲信息到服务器
+      addToPlaylist(song);
+    });
+    // 将这个div添加到结果容器中
+    resultsContainer.appendChild(songElement);
+  });
+}
+
+// 绑定touchstart和touchend到#searchResults的父元素，而不是直接绑定到div
+document.getElementById('searchResults').addEventListener('touchstart', function(e) {
+  if (e.target.tagName === 'DIV') {
+    e.target.classList.add('active');
+  }
+}, false);
+
+document.getElementById('searchResults').addEventListener('touchend', function(e) {
+  if (e.target.tagName === 'DIV') {
+    e.target.classList.remove('active');
+  }
+}, false);
+
+function addToPlaylist(song) {
+  // 使用 fetch API 发送数据到服务器
+  fetch('/add-to-playlist', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8',
+    },
+    body: JSON.stringify(song), // 发送歌曲信息作为请求体
+  })
+  .then(response => response.json())
+  .then(data => console.log('Added to playlist:', data))
+  .catch(error => console.error('Error adding song to playlist:', error));
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var homeIcon = document.getElementById('homeIcon');
+  homeIcon.addEventListener('click', function() {
+    toggleLayer('defaultLayer'); // 假设你的主页层有这个 ID
+  });
+});
+
+// 如果主页内容不在一个独立的层中，你可能需要一个专门的函数来处理显示主页的逻辑
+function showHome() {
+  // 这里实现你的代码，来显示主页内容
+  // 例如，你可以将主页内容放在一个有 'homeLayer' ID 的 div 中
+  toggleLayer('defaultLayer'); // 显示主页层
+}
+</script>
+
+</body>
+</html>

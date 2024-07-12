@@ -1,0 +1,14 @@
+Filter: Primary Video Renderer
+  Pin: VMR Input0
+  Pin: VMR Input1
+  Pin: VMR Input2
+  Pin: VMR Input3
+Filter: LAV Video Decoder
+  Pin: Input
+  Pin: Output
+Filter: LAV Splitter
+  Pin: Input
+  Pin: Video
+  Pin: Audio
+Filter: Source
+  Pin: Output

@@ -1,0 +1,16 @@
+<html>
+<body bgcolor="black">
+<debug value="false"/>
+<layer default="list3"/>
+<img src="list.png" border="0" usemap="#Map" width="480" height="800"/>
+<map name="Map" id="Map">
+  <area shape="rect" coords="12,18,140,86" href="btnsearch3" class="input" color="ff0000" opacity="0.7,0.8,1"/>
+  <area shape="rect" coords="12,88,140,136" cols="3" rows="10" group="songlist3" color="ff0000" opacity="0.7,0.8,1"/>
+  <area shape="rect" coords="440,215,479,353" href="btnsubmenu" color="white"  opacity="0.3,0.8,1" layer="items"/>
+  <area shape="rect" coords="345,52,410,88" href="itemspageup" binding="songlist3.left" opacity="0.3,0.8,1"/>
+  <area shape="rect" coords="411,52,477,87" href="itemspagedown" binding="songlist3.right" opacity="0.3,0.8,1"/>
+  <area shape="rect" coords="151,52,330,87" href="itemspagedown" binding="songlist3.slide" opacity="0.3,0.8,1" src="scroll.png" mouseover="scroll_over.png" mousedown="scroll_down.png"/>
+  <area shape="rect" coords="394,5,475,45" href="itemsback3" binding="songlist3.pageinfo" target="list" color="ff0000"  opacity="0.3,0.8,1"/>
+</map>
+</body>
+</html>

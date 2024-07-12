@@ -1,0 +1,53 @@
+<html>
+<layer default="book,bookadv,bookplayer,bookadvplayer"/>
+<debug value="false"/>
+<img src="default.png" border="0" usemap="#Map" width="1080" height="1920"/>
+<map name="Map" id="Map">
+  <area shape="rect" coords="1,552,1080,1920" href="bookbg" opacity="0.2,0.2,0.2" style="background-color:black"/>
+  <area shape="rect" coords="44,1566,138,1655" href="booklblvolume" size="22" align="middlerleft" color="white" class="glyphicon glyphicon-bullhorn"/>
+  <area shape="rect" coords="208,1335,733,1487" href="bookChannel" color="white" value="左聲道" style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="15,1315,1064,1316" href="bookhr" style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="3,148,1077,553" href="bookvideoinfo" color="white"/>
+  <area shape="rect" coords="44,1183,138,1272" href="booklblchannel" size="22" align="middlerleft" color="white" class="glyphicon glyphicon-globe"/>
+  <area shape="rect" coords="209,1539,408,1692" href="bookVolume" color="white" value="100%" style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="15,1121,1064,1122" href="bookhr" style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="15,927,1064,928" href="bookhr"  style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="44,591,138,680" href="booklblname" size="22" align="middlerleft" color="white" class="glyphicon glyphicon-film"/>
+  <area shape="rect" coords="218,757,743,909" href="bookSinger1" class="input" color="white" placeholder="歌手1"  style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="44,987,138,1076" href="booklblsinger2" size="22" align="middlerleft" color="white" class="glyphicon glyphicon-user"/>
+  <area shape="rect" coords="218,568,1056,720" href="bookSongName" class="input" color="white" placeholder="歌名"  style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="44,796,138,885" href="booklblsinger1" size="22" align="middleleft" color="white" class="glyphicon glyphicon-user"/>
+  <area shape="rect" coords="218,948,743,1100" href="bookSinger2" size="22" class="input" color="white" placeholder="歌手2"  style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <!--header-->
+  <area shape="rect" coords="-10,1,1080,146" href="bookwindowtitle" value="匯入歌庫" size="22" align="middlecenter" color="white" style="font-size:20px;background-color: rgba(0, 0, 0, 0.5);-moz-box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);-webkit-box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);box-shadow:4px 4px 12px -2px rgba(20%,20%,40%,0.5);"/>
+  <area shape="rect" coords="858,22,1060,113" href="bookfinished" value="完成" opacity="0.5,1,1" size="22" align="middlecenter" color="white" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;"/>
+  <area shape="rect" coords="26,22,228,113" href="bookback" value="返回" opacity="0.5,1,1" size="22" align="middlecenter" color="white" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;"/>
+  <area shape="rect" coords="15,1508,1064,1509" href="bookhr" style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="15,1713,1064,1714" href="bookhr" style="border: 0;height: 1px;background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="15,738,1063,739" href="bookhr" style="background: #333;background-image: linear-gradient(to right, #333, #333, #333);" class="bookhr"/>
+  <area shape="rect" coords="963,760,1057,908" href="booksinger1sex2" size="20" align="middlecenter" color="white" value="團"/>
+  <area shape="rect" coords="857,760,951,908" href="booksinger1sex1" size="20" align="middlecenter" color="white" value="男"/>
+  <area shape="rect" coords="752,760,846,908" href="booksinger1sex0" size="20" align="middlecenter" color="white" value="女"/>
+  <area shape="rect" coords="754,950,848,1098" href="booksinger2sex0" size="20" align="middlecenter" color="white" value="女"/>
+  <area shape="rect" coords="859,950,953,1098" href="booksinger2sex1" size="20" align="middlecenter" color="white" value="男"/>
+  <area shape="rect" coords="964,950,1058,1098" href="booksinger2sex2" size="20" align="middlecenter" color="white" value="團"/>
+  <area shape="rect" coords="15,1730,265,1815" href="bookTypeMovie" value="MV/電影" align="middlecenter" color="white"/>
+  <area shape="rect" coords="275,1730,531,1815" href="bookSource" value="原音原影" align="middlecenter" color="white"/>
+  <area shape="rect" coords="542,1730,798,1815" href="bookSingerSong" value="人聲" align="middlecenter" color="white"/>
+  <area shape="rect" coords="809,1730,1065,1815" href="bookTypeOneByOne" value="對唱" align="middlecenter" color="white"/>
+  <area shape="rect" coords="15,1824,265,1909" href="bookTypeHighSong" value="Hi歌/動感" align="middlecenter" color="white"/>
+  <area shape="rect" coords="276,1824,532,1909" href="bookTypeFestival" value="節慶" align="middlecenter" color="white"/>
+  <area shape="rect" coords="543,1824,799,1909" href="bookTypeGroup" value="團體" align="middlecenter" color="white"/>
+  <area shape="rect" coords="810,1824,1066,1909" href="bookTypeChildren" value="兒歌/童歌" align="middlecenter" color="white"/>
+  <area shape="rect" coords="208,1143,733,1295" href="bookSongLanguage" color="white" value="國語" style="border-radius: 0px;background-color:transparent;border:0px;font-size:20px;opacity:1"/>
+  <area shape="rect" coords="44,1373,138,1462" href="booklblchannel" size="22" align="middlerleft" color="white" class="glyphicon glyphicon-music"/>
+  <area shape="rect" coords="965,1144,1059,1292" href="bookSongLanguageplus" size="20" align="middlecenter" color="white" class="glyphicon glyphicon-menu-right" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="977,1528,1066,1608" href="bookVolumeplus" size="20" align="middlecenter" color="white" value="+" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="967,1337,1061,1485" href="bookChannelplus" size="20" align="middlecenter" color="white" class="glyphicon glyphicon-menu-right" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="861,1337,955,1485" href="bookChanneldel" size="20" align="middlecenter" color="white" class="glyphicon glyphicon-menu-left" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="977,1618,1066,1698" href="bookVolumedel" size="20" align="middlecenter" color="white" value="-" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="861,1144,952,1292" href="bookSongLanguagedel" size="20" align="middlecenter" color="white" class="glyphicon glyphicon-menu-left" style="margin:0px;font-size:14px;background-color: rgba(255, 255, 255, 0.2);-webkit-border-radius: 4px;-moz-border-radius: 4px;border-radius: 4px;" opacity="0.5,1,1" />
+  <area shape="rect" coords="470,172,660,250" href="bookPos" value="1 / 1" color="white" align="middlecenter" layer="noshow" autofill style="margin:0px;font-size:14px;background-color: rgba(0, 0, 0, 0.8);-webkit-border-radius: 12px;-moz-border-radius: 12px;border-radius: 12px;"/>
+  <!--book form-->
+</map>
+</html>

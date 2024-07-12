@@ -1,0 +1,79 @@
+<html>
+<meta charset="utf-8"> 
+<head>
+<!--<script type="text/javascript" src="jquery.1.8.2.min.js"></script>-->
+<!--<script type="text/javascript" src="jquery-1.7.2.min.js"></script>-->
+<script type="text/javascript" src="jquery.min.js"></script>
+<script type="text/javascript" src="jquery.NatureFace-orig.js"></script>
+<!--script type="text/javascript" src="jquery.NatureFace.js"></script-->
+<script type="text/javascript" src="iscroll.js"></script>
+<style>
+    .field {
+        border-bottom: 0.1em solid rgba(255, 255, 255, 0.3);
+        color : #cccccc;
+        text-shadow: white 1px 1px 1px;
+    }
+    
+    .myScrollbarV {
+        position:absolute;
+        z-index:100;
+        width:8px;bottom:7px;top:2px;right:1px
+    }
+
+    .myScrollbarV > div {
+        position:absolute;
+        z-index:100;
+        width:100%;
+    
+        /* The following is probably what you want to customize */
+        background:-webkit-gradient(linear, 0 0, 100% 0, from(#f00), to(#900));
+        border:1px solid #800;
+        -webkit-background-clip:padding-box;
+        -webkit-box-sizing:border-box;
+        -webkit-border-radius:4px;
+        -webkit-box-shadow:inset 1px 1px 0 rgba(255,255,255,0.5);
+    }
+</style>
+
+<script>
+$(document).ready(function() {  
+	$.NatureFace.init("start", true, "test/").target("list");
+	$.NatureFace.listing("songlist", "test/order.json",  
+			function(item,data){
+				item.append('<div class="field">' + data.songno + "." +data.songname + "</div>");
+				item.attr("songno",data.songno);
+			},
+			function(current, all){
+				console.info(current + " " + all);
+			}
+	);
+	
+	$.NatureFace.listing("songlist2", "test/order.json",  
+            function(item,data){
+                item.append('<div class="field">' + data.songno + "." +data.songname + "</div>");
+                item.attr("songno",data.songno);        
+            },
+            function(current, all){
+                console.info(current + " " + all);
+            }
+    );
+
+    $.NatureFace.binding("songlist3", "test/order.json",  
+            function(item,data){
+                item.append('<div class="field">' + data.songno + "." +data.songname + "</div>");
+                item.attr("songno",data.songno);        
+            },
+            function(item){
+                item.removeAttr("songno");
+                item.empty();
+            }
+    );
+	
+});  
+
+</script>
+
+</head>
+</html>
+
+
