@@ -129,6 +129,63 @@
         td {
             color: black; /* 字体颜色 */
         }
+        .song-details {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            z-index: 1000;
+            width: 80%;
+            max-width: 400px;
+            text-align: left;
+            display: none; /* 默认隐藏 */
+        }
+        /* 遮罩层样式 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 999;
+            display: none; /* 默认隐藏 */
+        }
+        .song-details button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #D32F2F;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .song-details button:hover {
+            background-color: #b52b2b;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            color: #D32F2F;
+        }
         .image-container {
             text-align: center;
             margin-top: 20px;
@@ -172,6 +229,9 @@
   </div>
 
 <div class="container">
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay"></div>
+
     <div class="form-container">
         <div class="form-group">
             <label for="singer-name">歌手名稱</label>
@@ -198,6 +258,17 @@
     <div class="image-container">
         <img src="手機點歌/LOGO_800x400px.png" alt="Wolf Fox Logo">
     </div>
+
+    <!-- 歌曲詳細信息區域 -->
+    <div class="song-details" id="song-details" style="display:none;">
+        <span class="close-btn" id="close-btn">&times;</span>
+        <p>歌名：<span id="detail-song-name"></span></p>
+        <p>編號：<span id="detail-song-number"></span></p>
+        <p>歌手：<span id="detail-singer"></span></p>
+        <p>語別：<span id="detail-language"></span></p>
+        <button id="order-song-button">包廂點歌</button>
+        <button id="insert-song-button">插播歌曲</button>
+    </div>
 </div>
 
 <script>
@@ -207,6 +278,18 @@
     menuToggle.addEventListener('click', () => {
         menu.classList.toggle('active');
     });
+
+    // 显示弹框及遮罩层的逻辑
+    function showDetails() {
+        document.getElementById('song-details').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    // 隐藏弹框及遮罩层的逻辑
+    function hideDetails() {
+        document.getElementById('song-details').style.display = 'none';
+        document.getElementById('overlay').style.display = 'none';
+    }
 
     function submitSearch(queryType) {
         console.log('submitSearch called with queryType:', queryType);
@@ -238,13 +321,70 @@
                 row.appendChild(singerCell);
                 row.appendChild(languageCell);
 
+                row.addEventListener('click', () => {
+                    window.selectedSong = song;
+                    console.log('Selected song:', window.selectedSong);
+
+                    document.getElementById('detail-song-name').textContent = song.Song;
+                    document.getElementById('detail-song-number').textContent = song.SongNumber; // 假設您有 SongNumber 屬性
+                    document.getElementById('detail-singer').textContent = song.ArtistA;
+                    document.getElementById('detail-language').textContent = song.Category;
+
+                    document.getElementById('song-details').style.display = 'block';
+                });
+
                 tableBody.appendChild(row);
             });
         })
         .catch(error => {
             console.error('Error:', error);
         });
+
+        // 点击遮罩层时隐藏弹框
+        document.getElementById('overlay').addEventListener('click', hideDetails);
+        
+        // 点击关闭按钮时隐藏弹框
+        document.getElementById('close-btn').addEventListener('click', hideDetails);
     }
+
+    document.getElementById('order-song-button').addEventListener('click', () => {
+        const song = window.selectedSong; // 从全局变量中获取选中的歌曲对象
+        console.log(window.selectedSong);
+        // 發送點歌請求到後端
+        fetch('/order-song', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(song) // 传递整个Song对象
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('點歌成功！');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('insert-song-button').addEventListener('click', () => {
+        const song = window.selectedSong; // 从全局变量中获取选中的歌曲对象
+        // 發送插播請求到後端
+        fetch('/insert-song', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8'
+            },
+            body: JSON.stringify(song) // 传递整个Song对象
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('插播成功！');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
 </script>
 
 </body>

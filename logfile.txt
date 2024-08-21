@@ -1,0 +1,8 @@
+2024/8/21 下午 10:47:03: File not found on both hosts: \\SVR01\DISK05\522260.mpg and \\SVR02\DISK05\522260.mpg
+2024/8/21 下午 10:50:28: File not found on both hosts: \\SVR01\DISK05\522260.mpg and \\SVR02\DISK05\522260.mpg
+2024/8/21 下午 10:52:22: File not found on both hosts: \\SVR01\DISK01\981793.mpg and \\SVR02\DISK01\981793.mpg
+2024/8/21 下午 10:52:25: File not found on both hosts: \\SVR01\DISK01\981793.mpg and \\SVR02\DISK01\981793.mpg
+2024/8/21 下午 10:53:21: File not found on both hosts: \\SVR01\DISK01\998996.mpg and \\SVR02\DISK01\998996.mpg
+2024/8/21 下午 10:53:24: File not found on both hosts: \\SVR01\DISK01\998996.mpg and \\SVR02\DISK01\998996.mpg
+2024/8/21 下午 10:54:36: File not found on both hosts: \\SVR01\DISK01\998490.mpg and \\SVR02\DISK01\998490.mpg
+2024/8/21 下午 10:54:39: File not found on both hosts: \\SVR01\DISK01\998490.mpg and \\SVR02\DISK01\998490.mpg

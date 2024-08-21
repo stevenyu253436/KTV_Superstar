@@ -131,6 +131,8 @@ namespace DualScreenDemo
             previousPromotionButton.Visible = false;
             nextPromotionButton.Visible = false;
             closePromotionsButton.Visible = false;
+
+            HotPlayButton_Click(sender, e);
         }
     }
 }

@@ -167,6 +167,14 @@ namespace DualScreenDemo
                 {
                     await HandleStickerRequest(context);
                 }
+                else if (relativePath == "/order-song")
+                {
+                    await HandleOrderSongRequest(context);
+                }
+                else if (relativePath == "/insert-song") // 添加对 /insert-song 的处理
+                {
+                    await HandleInsertSongRequest(context);
+                }
                 else
                 {
                     // Handle other POST requests
@@ -237,7 +245,15 @@ namespace DualScreenDemo
 
             // 使用搜索关键词进行歌曲搜索
             List<SongData> searchResults = new List<SongData>();
-            if (queryType == "singer")
+            if (queryType == "new-songs")
+            {
+                searchResults = SongListManager.NewSongLists["國語"];
+            }
+            else if (queryType == "top-ranking")
+            {
+                searchResults = SongListManager.HotSongLists["國語"];
+            }
+            else if (queryType == "singer")
             {
                 searchResults = songListManager.SearchSongsBySinger(searchKeyword);
             }
@@ -484,6 +500,84 @@ namespace DualScreenDemo
                 Console.WriteLine("JSON parsing error: " + ex.Message);
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 await context.Response.OutputStream.WriteAsync(new byte[0], 0, 0);
+            }
+        }
+
+        private static async Task HandleOrderSongRequest(HttpListenerContext context)
+        {
+            try
+            {
+                string requestBody;
+                using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+
+                Console.WriteLine("Received order song request: " + requestBody);
+
+                // 解析 JSON 为 Song 对象
+                var song = JsonConvert.DeserializeObject<SongData>(requestBody);
+                
+                if (song != null)
+                {
+                    Console.WriteLine($"Ordering Song: {song.Song} by {song.ArtistA}");
+                    // 这里可以添加处理逻辑，例如将歌曲加入到播放列表或数据库中
+                    OverlayForm.MainForm.AddSongToPlaylist(song);
+
+                    var response = new { status = "success", message = "Song ordered successfully" };
+                    string jsonResponse = JsonConvert.SerializeObject(response);
+                    await SendResponseAsync(context, jsonResponse);
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await SendResponseAsync(context, "{\"status\": \"error\", \"message\": \"Invalid song data\"}");
+                }
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("JSON parsing error: " + ex.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await SendResponseAsync(context, "{\"status\": \"error\", \"message\": \"Invalid JSON format\"}");
+            }
+        }
+
+        private static async Task HandleInsertSongRequest(HttpListenerContext context)
+        {
+            try
+            {
+                string requestBody;
+                using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+
+                Console.WriteLine("Received insert song request: " + requestBody);
+
+                // 解析 JSON 为 Song 对象
+                var song = JsonConvert.DeserializeObject<SongData>(requestBody);
+
+                if (song != null)
+                {
+                    Console.WriteLine($"Inserting Song: {song.Song} by {song.ArtistA}");
+                    // 这里可以添加插播歌曲的处理逻辑
+                    OverlayForm.MainForm.InsertSongToPlaylist(song);
+
+                    var response = new { status = "success", message = "Song inserted successfully" };
+                    string jsonResponse = JsonConvert.SerializeObject(response);
+                    await SendResponseAsync(context, jsonResponse);
+                }
+                else
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    await SendResponseAsync(context, "{\"status\": \"error\", \"message\": \"Invalid song data\"}");
+                }
+            }
+            catch (JsonException ex)
+            {
+                Console.WriteLine("JSON parsing error: " + ex.Message);
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                await SendResponseAsync(context, "{\"status\": \"error\", \"message\": \"Invalid JSON format\"}");
             }
         }
 

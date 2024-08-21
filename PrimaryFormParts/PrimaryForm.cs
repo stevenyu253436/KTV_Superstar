@@ -485,7 +485,6 @@ namespace DualScreenDemo
 
         public void HideSendOffScreen()
         {
-
             this.DoubleBuffered = true; // 启用双缓冲
             InitializeComponent();
             InitializeProgressBar();
