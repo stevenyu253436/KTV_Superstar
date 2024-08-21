@@ -1,4 +1,5 @@
 // OverlayForm/OverlayForm.Labels.cs
+using System.IO;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections.Generic;
@@ -44,6 +45,8 @@ namespace DualScreenDemo
         private System.Windows.Forms.Timer romanticTimer = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer dynamicTimer = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer tintTimer = new System.Windows.Forms.Timer();
+        private System.Windows.Forms.Timer secondLineDisplayTimer = new System.Windows.Forms.Timer();
+        private System.Windows.Forms.Timer qrCodeTimer = new System.Windows.Forms.Timer();
 
         private void InitializeLabels()
         {
@@ -128,6 +131,94 @@ namespace DualScreenDemo
             
             keyDownTimer.Interval = 3000; // 3 seconds
             keyDownTimer.Tick += (sender, e) => HideKeyDownLabel();
+
+            secondLineDisplayTimer.Interval = 30000; // 30秒
+            secondLineDisplayTimer.Tick += SecondLineDisplayTimer_Tick;
+
+            // Initialize Timer for hiding QR code
+            qrCodeTimer.Interval = 10000; // 10 seconds
+            qrCodeTimer.Tick += QrCodeTimer_Tick;
+        }
+
+        private void QrCodeTimer_Tick(object sender, EventArgs e)
+        {
+            showQRCode = false;
+            qrCodeTimer.Stop();
+            Invalidate(); // Trigger a repaint to hide the QR code
+        }
+
+        public void DisplayQRCodeOnOverlay(string randomFolderPath)
+        {
+            try
+            {
+                // Read the server address from the file
+                string serverAddressFilePath = Path.Combine(Application.StartupPath, "txt", "ip.txt");
+                if (!File.Exists(serverAddressFilePath))
+                {
+                    Console.WriteLine("Server address file not found: " + serverAddressFilePath);
+                    return;
+                }
+
+                string serverAddress = File.ReadAllText(serverAddressFilePath).Trim();
+                // Generate the URL content for the QR code
+                string qrContent = String.Format("{0}/{1}/index.html", serverAddress, randomFolderPath);
+                Console.WriteLine("QR Content: " + qrContent);
+
+                // Generate QR code image
+                string qrImagePath = Path.Combine(Application.StartupPath, "themes/superstar/_www", randomFolderPath, "qrcode.png");
+                if (!File.Exists(qrImagePath))
+                {
+                    Console.WriteLine("QR code image not found: " + qrImagePath);
+                    return;
+                }
+
+                // Attempt to open the QR code image with retries
+                for (int i = 0; i < 3; i++)
+                {
+                    try
+                    {
+                        using (var fs = new FileStream(qrImagePath, FileMode.Open, FileAccess.Read))
+                        {
+                            qrCodeImage = Image.FromStream(fs);
+                        }
+                        break;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error loading QR code image: " + ex.Message);
+                        System.Threading.Thread.Sleep(100); // Wait a bit before retrying
+                    }
+                }
+
+                if (qrCodeImage == null)
+                {
+                    Console.WriteLine("Failed to load QR code image after multiple attempts.");
+                    return;
+                }
+
+                showQRCode = true;
+                qrCodeTimer.Start();
+                Invalidate(); // Trigger a repaint to show the QR code
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error in DisplayQRCodeOnOverlay: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner exception: " + ex.InnerException.Message);
+                }
+            }
+        }
+
+        private void SecondLineDisplayTimer_Tick(object sender, EventArgs e)
+        {
+            // 停止计时器
+            secondLineDisplayTimer.Stop();
+
+            // 清空第二行文本并重绘
+            marqueeTextSecondLine = "";
+            marqueeXPosSecondLine = this.Width;
+            Invalidate();
         }
 
         private void InitializeDisplayLabel()
@@ -144,7 +235,7 @@ namespace DualScreenDemo
         private void InitializeSongDisplayLabel()
         {
             songDisplayLabel = new Label();
-            songDisplayLabel.Location = new Point(0, 100); // 設置顯示位置
+            songDisplayLabel.Location = new Point(0, 150); // 設置顯示位置
             songDisplayLabel.AutoSize = true;
             songDisplayLabel.ForeColor = Color.White;
             songDisplayLabel.Font = new Font("Microsoft JhengHei", 40, FontStyle.Bold); // 設定字體樣式

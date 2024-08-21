@@ -19,6 +19,7 @@ namespace DualScreenDemo
     {
         // private SongListControl songListControl;
         private string marqueeText = "這是跑馬燈文字示例 - 歡迎使用MediaPlayerForm!";
+        private Color marqueeTextColor = Color.White; // 默认颜色
         private string marqueeTextSecondLine = ""; // 新增第二行文字
         private string marqueeTextThirdLine = "";
         private int marqueeXPos;
@@ -36,24 +37,6 @@ namespace DualScreenDemo
         private int bottomMargin;
         public static System.Windows.Forms.Timer displayTimer = new System.Windows.Forms.Timer();
         public static System.Timers.Timer songDisplayTimer = new System.Timers.Timer();
-        // public class UnifiedTimer : System.Windows.Forms.Timer
-        // {
-        //     public UnifiedTimer():base()        
-        //     { base.Enabled = true; }
-
-        //     public UnifiedTimer(System.ComponentModel.IContainer container) : base(container) 
-        //     { base.Enabled = true; }
-
-        //     private bool _Enabled;
-        //     public override bool Enabled
-        //     {
-        //         get { return _Enabled; }
-        //         set { _Enabled = value; }
-        //     }
-
-        //     protected override void OnTick(System.EventArgs e)
-        //     { if (this.Enabled) base.OnTick(e); }
-        // }
         public static System.Timers.Timer unifiedTimer;
         private System.Windows.Forms.Timer stickerTimer1 = new System.Windows.Forms.Timer();
         private System.Windows.Forms.Timer stickerTimer2 = new System.Windows.Forms.Timer();
@@ -68,6 +51,8 @@ namespace DualScreenDemo
         private System.Windows.Forms.Timer secondLineTimer;
         private DateTime secondLineStartTime;
         private const int secondLineDuration = 20000; // 20 seconds
+        private Image qrCodeImage;
+        private bool showQRCode;
 
         public enum MarqueeStartPosition
         {
@@ -199,7 +184,7 @@ namespace DualScreenDemo
 
             // 初始化跑馬燈位置
             marqueeXPos = this.Width;
-            marqueeXPosSecondLine = 3 * this.Width / 4;
+            marqueeXPosSecondLine = 7 * this.Width / 8;
             marqueeXPosThirdLine = this.Width;
 
             // 初始化 Timer
@@ -240,7 +225,7 @@ namespace DualScreenDemo
         private void ConfigureTimers()
         {
             // 初始化计时器，但不启动
-            displayTimer.Interval = 30000; // 3秒后清除文本
+            displayTimer.Interval = 100000; // 3秒后清除文本
             displayTimer.Tick += DisplayTimer_Tick;
 
             songDisplayTimer = new System.Timers.Timer(30000); // 设置间隔时间为5秒（5000毫秒）
@@ -476,7 +461,7 @@ namespace DualScreenDemo
             {
                 string filePath = Path.Combine(Application.StartupPath, "WelcomeMessage.txt");
                 string welcomeMessage = File.ReadAllText(filePath);
-                this.UpdateMarqueeText(welcomeMessage, MarqueeStartPosition.Right);
+                this.UpdateMarqueeText(welcomeMessage, MarqueeStartPosition.Right, Color.White);
             }
             catch (Exception ex)
             {
@@ -493,6 +478,7 @@ namespace DualScreenDemo
             using (Font largeFont = new Font("微軟正黑體", 40, FontStyle.Bold))
             using (Brush whiteBrush = new SolidBrush(Color.White))
             using (Brush limeGreenBrush = new SolidBrush(Color.LimeGreen))
+            using (Brush marqueeBrush = new SolidBrush(marqueeTextColor)) // 新增：使用动态颜色
             {
                 // 獲取文字的大小
                 SizeF textSize = e.Graphics.MeasureString(marqueeText, largeFont);
@@ -504,15 +490,22 @@ namespace DualScreenDemo
                 float yPosition3 = 100;  // 第三行 Y 坐标
 
                 // 繪製跑馬燈文字
-                e.Graphics.DrawString(marqueeText, largeFont, whiteBrush, new PointF(marqueeXPos, yPosition1));
+                e.Graphics.DrawString(marqueeText, largeFont, marqueeBrush, new PointF(marqueeXPos, yPosition1));
 
                 // 设置剪辑区域，使第二行文字只在 3/4 到 1/4 范围内显示
-                Rectangle clipRect = new Rectangle((int)(this.Width / 4), (int)yPosition2, (int)(this.Width / 2), (int)textSize.Height);
+                Rectangle clipRect = new Rectangle((int)(this.Width / 8), (int)yPosition2, (int)(3 * this.Width / 4), (int)textSize.Height);
+                // Rectangle clipRect = new Rectangle(0, (int)yPosition2, (int)(3 * this.Width / 4), (int)textSize.Height);
                 Region originalClip = e.Graphics.Clip;
                 e.Graphics.SetClip(clipRect);
 
-                // 繪製第二行跑馬燈文字
-                e.Graphics.DrawString(marqueeTextSecondLine, largeFont, limeGreenBrush, new PointF(marqueeXPosSecondLine, yPosition2));
+                // 計算第二行文字的寬度
+                SizeF textSizeSecondLine = e.Graphics.MeasureString(marqueeTextSecondLine, largeFont);
+
+                // 計算文本的起始 X 座標，讓它置中
+                float centeredXPos = (this.Width - textSizeSecondLine.Width) / 2;
+
+                // 繪製文字，使用計算出來的 centeredXPos 作為 X 座標
+                e.Graphics.DrawString(marqueeTextSecondLine, largeFont, limeGreenBrush, new PointF(centeredXPos, yPosition2));
 
                 // 恢复原始剪辑区域
                 e.Graphics.Clip = originalClip;
@@ -541,6 +534,12 @@ namespace DualScreenDemo
                 if (secondStickerImage != null)
                 {
                     e.Graphics.DrawImage(secondStickerImage, secondStickerXPos, imageYPos);
+                }
+                if (showQRCode && qrCodeImage != null)
+                {
+                    // Set the position where you want to overlay the QR code
+                    Rectangle qrCodeRect = new Rectangle(32, topMargin, screenHeight / 3, screenHeight / 3);
+                    e.Graphics.DrawImage(qrCodeImage, qrCodeRect);
                 }
             }
         }

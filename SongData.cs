@@ -25,9 +25,10 @@ namespace DualScreenDemo
         public string SongGenre { get; set; }
         public string ArtistAPinyin { get; set; } // 新增歌手A拼音
         public string ArtistBPinyin { get; set; } // 新增歌手B拼音
+        public int HumanVoice { get; set; } // Add HumanVoice property
 
         // 更新构造函数以包括歌曲文件路径参数
-        public SongData(string songNumber, string category, string song, double plays, string artistA, string artistB, string artistACategory, string artistBCategory, DateTime addedTime, string songFilePathHost1, string songFilePathHost2, string phoneticNotation, string pinyinNotation, string artistAPhonetic, string artistBPhonetic, string artistASimplified, string artistBSimplified, string songSimplified, string songGenre, string artistAPinyin, string artistBPinyin)
+        public SongData(string songNumber, string category, string song, double plays, string artistA, string artistB, string artistACategory, string artistBCategory, DateTime addedTime, string songFilePathHost1, string songFilePathHost2, string phoneticNotation, string pinyinNotation, string artistAPhonetic, string artistBPhonetic, string artistASimplified, string artistBSimplified, string songSimplified, string songGenre, string artistAPinyin, string artistBPinyin, int humanVoice)
         {
             SongNumber = songNumber;
             Category = category;
@@ -50,6 +51,7 @@ namespace DualScreenDemo
             SongGenre = songGenre;
             ArtistAPinyin = artistAPinyin;
             ArtistBPinyin = artistBPinyin;
+            HumanVoice = humanVoice; // Assign the HumanVoice parameter
         }
 
         public override string ToString()

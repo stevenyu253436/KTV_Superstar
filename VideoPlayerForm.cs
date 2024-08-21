@@ -684,12 +684,12 @@ namespace DualScreenDemo
             if (overlayForm.InvokeRequired)
             {
                 overlayForm.Invoke(new MethodInvoker(() => {
-                    overlayForm.UpdateMarqueeText(nextSongText, OverlayForm.MarqueeStartPosition.Middle);
+                    overlayForm.UpdateMarqueeText(nextSongText, OverlayForm.MarqueeStartPosition.Middle, Color.White);
                 }));
             }
             else
             {
-                overlayForm.UpdateMarqueeText(nextSongText, OverlayForm.MarqueeStartPosition.Middle);
+                overlayForm.UpdateMarqueeText(nextSongText, OverlayForm.MarqueeStartPosition.Middle, Color.White);
             }
             
             // 等待一段时间，比如5秒
@@ -747,6 +747,9 @@ namespace DualScreenDemo
                 // MessageBox.Show("File does not exist on both hosts.");
                 return; // 如果两个文件路径都不存在，则返回
             }
+
+            // 在此调用 DisplayQRCodeOnOverlay 方法来显示 QR 码
+            overlayForm.DisplayQRCodeOnOverlay(HttpServer.randomFolderPath);
 
             // // 使用 MediaInfo 检查文件格式
             // var mediaInfo = new MediaInfo();

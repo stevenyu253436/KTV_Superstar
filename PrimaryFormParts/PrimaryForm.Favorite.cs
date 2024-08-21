@@ -254,7 +254,7 @@ namespace DualScreenDemo
                     SongListManager.Instance.UserLogin(mobileNumber);
                     // Add logic to display favorite songs if needed
                     // Create a list with a single empty SongData element
-                    List<SongData> emptySongList = new List<SongData> { new SongData("", "", "歡迎光臨 " + "(" + mobileNumber + ")", 0, "", "", "", "", DateTime.Now, "", "", "", "", "", "", "", "", "", "", "", "") };
+                    List<SongData> emptySongList = new List<SongData> { new SongData("", "", "歡迎光臨 " + "(" + mobileNumber + ")", 0, "", "", "", "", DateTime.Now, "", "", "", "", "", "", "", "", "", "", "", "", 1) };
                     multiPagePanel.currentPageIndex = 0;
                     multiPagePanel.LoadSongs(emptySongList);
                     ToggleFavoritePictureBoxButtonsVisibility();

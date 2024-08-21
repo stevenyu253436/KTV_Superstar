@@ -181,8 +181,8 @@ namespace DualScreenDemo
                 ForeColor = Color.White,
                 BackColor = Color.Transparent,
                 Font = new Font("微軟正黑體", 24, FontStyle.Bold),
-                Location = new Point(baseX, baseY),
-                Size = new Size(550, 37),
+                Location = new Point(baseX + 32, baseY),
+                Size = new Size(510, 37),
                 TextAlign = ContentAlignment.TopLeft,
                 Tag = song  // Storing the song object for reference
             };
@@ -190,6 +190,21 @@ namespace DualScreenDemo
             titleLabel.MouseDown += Label_MouseDown;
             titleLabel.MouseMove += Label_MouseMove;
             titleLabel.MouseUp += Label_MouseUp;
+
+            // Check if HumanVoice is 1 and add an icon if so
+            if (song.HumanVoice == 1)
+            {
+                PictureBox icon = new PictureBox()
+                {
+                    Image = Image.FromFile(Path.Combine(Application.StartupPath, @"themes\superstar\其他符號_人聲\其他符號_人聲.png")), // Set your icon path
+                    SizeMode = PictureBoxSizeMode.AutoSize,
+                    Location = new Point(baseX + 5, baseY + 5) // Adjust the icon position as needed
+                };
+
+                PrimaryForm.ResizeAndPositionControl(icon, icon.Location.X, icon.Location.Y, icon.Size.Width, icon.Size.Height);
+
+                targetPanel.Controls.Add(icon);
+            }
 
             // Determine the text for the artist label based on the presence of ArtistB
             string artistText = isSimplified ? 
@@ -215,6 +230,7 @@ namespace DualScreenDemo
 
             PrimaryForm.ResizeAndPositionControl(titleLabel, titleLabel.Location.X, titleLabel.Location.Y, titleLabel.Size.Width, titleLabel.Size.Height);
             PrimaryForm.ResizeAndPositionControl(artistLabel, artistLabel.Location.X, artistLabel.Location.Y, artistLabel.Size.Width, artistLabel.Size.Height);
+            
             // Console.WriteLine("titleLabel Size: ", titleLabel.Size);
             // Console.WriteLine("artistLabel Size: ", artistLabel.Size);
 

@@ -264,6 +264,8 @@ namespace DualScreenDemo
         private Button buttonTopLeft;
         private Button buttonThanks;
 
+        private Dictionary<Control, (Point Location, bool Visible)> initialControlStates = new Dictionary<Control, (Point Location, bool Visible)>();
+
         public PrimaryForm()
         {
             Instance = this;
@@ -322,12 +324,28 @@ namespace DualScreenDemo
             // 初始化 PromotionsAndMenuPanel
             InitializePromotionsAndMenuPanel();
 
+            // 保存初始状态
+            SaveInitialControlStates(this);
+
             // 设置窗口最大化和无边框样式以实现全屏效果
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
 
             // 訂閱 Paint 事件
             this.Paint += PrimaryForm_Paint;
+        }
+
+        private void SaveInitialControlStates(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                initialControlStates[control] = (control.Location, control.Visible);
+
+                if (control.HasChildren)
+                {
+                    SaveInitialControlStates(control);
+                }
+            }
         }
 
         private void PrimaryForm_Paint(object sender, PaintEventArgs e)
@@ -467,6 +485,7 @@ namespace DualScreenDemo
 
         public void HideSendOffScreen()
         {
+
             this.DoubleBuffered = true; // 启用双缓冲
             InitializeComponent();
             InitializeProgressBar();
@@ -524,6 +543,29 @@ namespace DualScreenDemo
             // 设置窗口最大化和无边框样式以实现全屏效果
             this.WindowState = FormWindowState.Maximized;
             this.FormBorderStyle = FormBorderStyle.None;
+            
+            // 确保所有控件和资源已完全加载
+            this.Shown += (sender, e) =>
+            {
+                RestoreInitialControlStates(this);
+            };
+        }
+
+        private void RestoreInitialControlStates(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                if (initialControlStates.TryGetValue(control, out var state))
+                {
+                    control.Location = state.Location;
+                    control.Visible = state.Visible;
+                }
+
+                if (control.HasChildren)
+                {
+                    RestoreInitialControlStates(control);
+                }
+            }
         }
 
         private void UpdateProgress(TimeSpan currentPosition)
@@ -1831,7 +1873,7 @@ namespace DualScreenDemo
                         string songNumber = match.Groups["songNumber"].Value;
                         string songName = match.Groups["songName"].Value;
 
-                        SongData song = new SongData(songNumber, "", songName, 0, "", "", "", "", DateTime.Now, songPath, "", "", "", "", "", "", "", "", "", "", "");
+                        SongData song = new SongData(songNumber, "", songName, 0, "", "", "", "", DateTime.Now, songPath, "", "", "", "", "", "", "", "", "", "", "", 1);
                         publicSongList.Add(song);
                     }
                 }

@@ -2,6 +2,8 @@ using System;
 using System.Net;
 using System.Net.Sockets; // Add this for TcpListener
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Drawing;
 using System.Threading.Tasks;
 
 namespace DualScreenDemo
@@ -84,8 +86,26 @@ namespace DualScreenDemo
                             // 在 TCPServer 的适当位置调用更新方法
                             if (OverlayForm.MainForm != null)
                             {
-                                string message = "系統公告: " + request.Trim();
-                                OverlayForm.MainForm.UpdateMarqueeTextSecondLine(message);
+                                string message = request.Trim();
+                                string pattern = @"^(全部|\d{4})\((白色|紅色|綠色|黑色|藍色)\)-";
+                                Match match = Regex.Match(message, pattern);
+
+                                if (match.Success)
+                                {
+                                    // 去掉匹配的前缀
+                                    string marqueeMessage = message.Substring(match.Value.Length).Trim();
+
+                                    // 根据匹配的颜色设置相应的颜色
+                                    Color textColor = GetColorFromString(match.Groups[2].Value);
+
+                                    // 更新跑马灯文本和颜色
+                                    OverlayForm.MainForm.UpdateMarqueeText(marqueeMessage, OverlayForm.MarqueeStartPosition.Middle, textColor);
+                                }
+                                else
+                                {
+                                    string marqueeMessage = "系統公告: " + message;
+                                    OverlayForm.MainForm.UpdateMarqueeTextSecondLine(marqueeMessage);
+                                }
                             }
 
                             // 处理命令
@@ -106,6 +126,26 @@ namespace DualScreenDemo
             finally
             {
                 listener.Stop();
+            }
+        }
+
+        // 辅助方法：根据颜色字符串返回相应的 Color 对象
+        private Color GetColorFromString(string colorName)
+        {
+            switch (colorName)
+            {
+                case "白色":
+                    return Color.White;
+                case "紅色":
+                    return Color.Red;
+                case "綠色":
+                    return Color.Green;
+                case "黑色":
+                    return Color.Black;
+                case "藍色":
+                    return Color.Blue;
+                default:
+                    return Color.Black; // 默认颜色
             }
         }
 

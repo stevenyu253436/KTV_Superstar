@@ -182,7 +182,7 @@ namespace DualScreenDemo
                 {
                     connection.Open();  // 打開數據庫連接
 
-                    string sql = "SELECT 歌曲編號, 語別, 歌曲名稱, 點播次數, [歌星 A], [歌星 B], 新增日期, [路徑 1], [路徑 2], 歌曲檔名, 歌曲注音, 歌曲拼音, 歌星A分類, 歌星B分類, 歌星A注音, 歌星B注音, 歌星A簡體, 歌星B簡體, 歌名簡體, 分類, 歌星A拼音, 歌星B拼音 FROM SongLibrary";  // 替換 your_table_name 為您的數據表名
+                    string sql = "SELECT 歌曲編號, 語別, 歌曲名稱, 點播次數, [歌星 A], [歌星 B], 新增日期, [路徑 1], [路徑 2], 歌曲檔名, 歌曲注音, 歌曲拼音, 歌星A分類, 歌星B分類, 歌星A注音, 歌星B注音, 歌星A簡體, 歌星B簡體, 歌名簡體, 分類, 歌星A拼音, 歌星B拼音, 人聲 FROM SongLibrary";  // 替換 your_table_name 為您的數據表名
                     using (var command = new SQLiteCommand(sql, connection))
                     {
                         using (SQLiteDataReader reader = command.ExecuteReader())
@@ -232,8 +232,9 @@ namespace DualScreenDemo
                                 string songGenre = reader["分類"].ToString();  // New category attribute
                                 string artistAPinyin = reader["歌星A拼音"].ToString();
                                 string artistBPinyin = reader["歌星B拼音"].ToString();
+                                int humanVoice = Convert.ToInt32(reader["人聲"]);  // Read HumanVoice value
 
-                                AllSongs.Add(new SongData(songNumber, category, song, plays, artistA, artistB, artistACategory, artistBCategory, addedTime, songFilePathHost1, songFilePathHost2, phoneticNotation, pinyinNotation, artistAPhonetic, artistBPhonetic, artistASimplified, artistBSimplified, songSimplified, songGenre, artistAPinyin, artistBPinyin));
+                                AllSongs.Add(new SongData(songNumber, category, song, plays, artistA, artistB, artistACategory, artistBCategory, addedTime, songFilePathHost1, songFilePathHost2, phoneticNotation, pinyinNotation, artistAPhonetic, artistBPhonetic, artistASimplified, artistBSimplified, songSimplified, songGenre, artistAPinyin, artistBPinyin, humanVoice));
                             }
                         }
                     }
@@ -258,7 +259,7 @@ namespace DualScreenDemo
 
             // 清空 FavoriteSongs 列表，并添加一个空的 SongData 实例
             FavoriteSongs.Clear();
-            FavoriteSongs.Add(new SongData("", "", UserPhoneNumber + " 的歌單", 0, "", "", "", "", DateTime.MinValue, "", "", "", "", "", "", "", "", "", "", "", ""));
+            FavoriteSongs.Add(new SongData("", "", UserPhoneNumber + " 的歌單", 0, "", "", "", "", DateTime.MinValue, "", "", "", "", "", "", "", "", "", "", "", "", 1));
 
             using (var connection = new SQLiteConnection(connectionString))
             {
@@ -273,7 +274,7 @@ namespace DualScreenDemo
                             sl.[路徑 2], sl.歌曲檔名, sl.歌曲注音, sl.歌曲拼音, 
                             sl.歌星A分類, sl.歌星B分類, sl.歌星A注音, sl.歌星B注音, 
                             sl.歌星A簡體, sl.歌星B簡體, sl.歌名簡體, sl.分類, 
-                            sl.歌星A拼音, sl.歌星B拼音 
+                            sl.歌星A拼音, sl.歌星B拼音, sl.人聲
                         FROM 
                             FavoriteSongs fs 
                         JOIN 
@@ -325,6 +326,7 @@ namespace DualScreenDemo
                                 string songGenre = reader["分類"].ToString(); 
                                 string artistAPinyin = reader["歌星A拼音"].ToString();
                                 string artistBPinyin = reader["歌星B拼音"].ToString();
+                                int humanVoice = Convert.ToInt32(reader["人聲"]);  // 读取人声值
 
                                 FavoriteSongs.Add(new SongData(
                                     songNumber, category, song, plays, artistA, artistB, 
@@ -332,7 +334,7 @@ namespace DualScreenDemo
                                     songFilePathHost2, phoneticNotation, pinyinNotation, 
                                     artistAPhonetic, artistBPhonetic, artistASimplified, 
                                     artistBSimplified, songSimplified, songGenre, 
-                                    artistAPinyin, artistBPinyin));
+                                    artistAPinyin, artistBPinyin, humanVoice));
                             }
                             PrimaryForm.Instance.multiPagePanel.currentPageIndex = 0;
                             PrimaryForm.Instance.multiPagePanel.LoadSongs(FavoriteSongs);

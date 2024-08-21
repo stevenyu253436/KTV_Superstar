@@ -38,9 +38,10 @@ namespace DualScreenDemo
             }
         }
 
-        public void UpdateMarqueeText(string newText, MarqueeStartPosition startPosition)
+        public void UpdateMarqueeText(string newText, MarqueeStartPosition startPosition, Color textColor)
         {
             this.marqueeText = newText;
+            this.marqueeTextColor = textColor; // 新增：保存文本颜色
 
             // 根据开始位置参数设置文本的X位置
             switch (startPosition)
@@ -72,12 +73,16 @@ namespace DualScreenDemo
             // 使用 Graphics 计算文本宽度
             using (Graphics graphics = this.CreateGraphics())
             {
-                marqueeXPosSecondLine = this.Width * 3 / 4;
+                float textWidth = MeasureDisplayStringWidth(graphics, marqueeTextSecondLine, new Font("微軟正黑體", 40, FontStyle.Bold));
+                marqueeXPosSecondLine = (int)((this.Width - textWidth) / 2); // 居中显示，并将 float 转换为 int
             }
 
             // 启动计时器
             secondLineStartTime = DateTime.Now;
             secondLineTimer.Start();
+
+            // 启动显示定时器，30秒后隐藏文本
+            secondLineDisplayTimer.Start();
         }
 
         public void UpdateMarqueeTextThirdLine(string newText)
@@ -104,28 +109,28 @@ namespace DualScreenDemo
         {
             // 更新跑馬燈位置
             marqueeXPos -= 2; // 每次移動 5 像素，速度可以調整
-            marqueeXPosSecondLine -= 2; // 第二行也同样移动
+            // marqueeXPosSecondLine -= 2; // 第二行也同样移动
             marqueeXPosThirdLine -= 2;
 
             if (marqueeXPos < -MeasureDisplayStringWidth(this.CreateGraphics(), marqueeText, this.Font))
                 marqueeXPos = this.Width;
             
-            if (!string.IsNullOrEmpty(marqueeTextSecondLine))
-            {
-                marqueeXPosSecondLine -= 2; // 第二行文本也移动
+            // if (!string.IsNullOrEmpty(marqueeTextSecondLine))
+            // {
+            //     marqueeXPosSecondLine -= 2; // 第二行文本也移动
 
-                // 使用 Graphics 计算文本宽度
-                using (Graphics graphics = this.CreateGraphics())
-                {
-                    float textWidth = MeasureDisplayStringWidth(graphics, marqueeTextSecondLine, new Font("微軟正黑體", 24, FontStyle.Bold));
+            //     // 使用 Graphics 计算文本宽度
+            //     using (Graphics graphics = this.CreateGraphics())
+            //     {
+            //         float textWidth = MeasureDisplayStringWidth(graphics, marqueeTextSecondLine, new Font("微軟正黑體", 24, FontStyle.Bold));
                     
-                    // 检查第二行是否到达屏幕的1/4位置
-                    if (marqueeXPosSecondLine < (int)(this.Width / 4 - textWidth))
-                    {
-                        marqueeXPosSecondLine = this.Width * 3 / 4;
-                    }
-                }
-            }
+            //         // 检查第二行是否到达屏幕的1/4位置
+            //         if (marqueeXPosSecondLine < (int)(this.Width / 4 - textWidth))
+            //         {
+            //             marqueeXPosSecondLine = this.Width * 3 / 4;
+            //         }
+            //     }
+            // }
 
             if (!string.IsNullOrEmpty(marqueeTextThirdLine))
             {
