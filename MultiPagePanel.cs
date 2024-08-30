@@ -28,7 +28,8 @@ namespace DualScreenDemo
         private int maxNegativeDeltaX = 0; // 最大负向偏移
         private const int ShiftThreshold = 150; // 调整这个值以改变滑动距离
         private bool isSimplified = false;
-        
+        private bool usePlayStates = false;  // 默认为不使用播放状态
+
         public bool IsSimplified
         {
             get { return isSimplified; }
@@ -92,6 +93,7 @@ namespace DualScreenDemo
         public void LoadSongs(List<SongData> songs)
         {
             currentSongList = songs;
+            usePlayStates = false;  // 不使用播放状态
             LoadPage(currentPageIndex - 1);  // Load the previous page
             LoadPage(currentPageIndex);      // Load the current page
             LoadPage(currentPageIndex + 1);  // Load the next page
@@ -101,6 +103,7 @@ namespace DualScreenDemo
         {
             currentSongList = songs;
             currentPlayStates = playStates;
+            usePlayStates = true;  // 使用播放状态
             LoadPageWithStates(currentPageIndex - 1);  // Load the previous page
             LoadPageWithStates(currentPageIndex);      // Load the current page
             LoadPageWithStates(currentPageIndex + 1);  // Load the next page
@@ -510,18 +513,38 @@ namespace DualScreenDemo
         {
             if (currentPageIndex > 0)
                 currentPageIndex--;
-            LoadPage(currentPageIndex - 1);
-            LoadPage(currentPageIndex);
-            LoadPage(currentPageIndex + 1);
+
+            if (usePlayStates)
+            {
+                LoadPageWithStates(currentPageIndex - 1);
+                LoadPageWithStates(currentPageIndex);
+                LoadPageWithStates(currentPageIndex + 1);
+            }
+            else
+            {
+                LoadPage(currentPageIndex - 1);
+                LoadPage(currentPageIndex);
+                LoadPage(currentPageIndex + 1);
+            }
         }
 
         public void LoadNextPage()
         {
             if (currentPageIndex < (currentSongList.Count - 1) / SongsPerPage)
                 currentPageIndex++;
-            LoadPage(currentPageIndex - 1);
-            LoadPage(currentPageIndex);
-            LoadPage(currentPageIndex + 1);
+
+            if (usePlayStates)
+            {
+                LoadPageWithStates(currentPageIndex - 1);
+                LoadPageWithStates(currentPageIndex);
+                LoadPageWithStates(currentPageIndex + 1);
+            }
+            else
+            {
+                LoadPage(currentPageIndex - 1);
+                LoadPage(currentPageIndex);
+                LoadPage(currentPageIndex + 1);
+            }
         }
     }
 }
