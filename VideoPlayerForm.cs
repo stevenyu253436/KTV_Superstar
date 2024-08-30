@@ -946,6 +946,70 @@ namespace DualScreenDemo
                     Marshal.ReleaseComObject(videoWindowSecondary);
                     videoWindowSecondary = null;
                 }
+
+                // 释放视频渲染器
+                if (videoRendererPrimary != null)
+                {
+                    Marshal.ReleaseComObject(videoRendererPrimary);
+                    videoRendererPrimary = null;
+                }
+                if (videoRendererSecondary != null)
+                {
+                    Marshal.ReleaseComObject(videoRendererSecondary);
+                    videoRendererSecondary = null;
+                }
+
+                // 释放 LAV 分离器和解码器
+                if (lavSplitterPrimary != null)
+                {
+                    Marshal.ReleaseComObject(lavSplitterPrimary);
+                    lavSplitterPrimary = null;
+                }
+                if (lavSplitterSecondary != null)
+                {
+                    Marshal.ReleaseComObject(lavSplitterSecondary);
+                    lavSplitterSecondary = null;
+                }
+                if (lavVideoDecoderPrimary != null)
+                {
+                    Marshal.ReleaseComObject(lavVideoDecoderPrimary);
+                    lavVideoDecoderPrimary = null;
+                }
+                if (lavVideoDecoderSecondary != null)
+                {
+                    Marshal.ReleaseComObject(lavVideoDecoderSecondary);
+                    lavVideoDecoderSecondary = null;
+                }
+                if (lavAudioDecoderSecondary != null)
+                {
+                    Marshal.ReleaseComObject(lavAudioDecoderSecondary);
+                    lavAudioDecoderSecondary = null;
+                }
+
+                // 释放 VMR9 渲染器
+                if (vmr9Primary != null)
+                {
+                    Marshal.ReleaseComObject(vmr9Primary);
+                    vmr9Primary = null;
+                }
+                if (vmr9Secondary != null)
+                {
+                    Marshal.ReleaseComObject(vmr9Secondary);
+                    vmr9Secondary = null;
+                }
+                
+                // 释放输出引脚
+                // if (outputPinPrimary != null)
+                // {
+                //     Marshal.ReleaseComObject(outputPinPrimary);
+                //     outputPinPrimary = null;
+                // }
+                if (outputPinSecondary != null)
+                {
+                    Marshal.ReleaseComObject(outputPinSecondary);
+                    outputPinSecondary = null;
+                }
+
             }
             catch (Exception ex)
             {
