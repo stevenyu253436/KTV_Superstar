@@ -1875,6 +1875,11 @@ namespace DualScreenDemo
                         SongData song = new SongData(songNumber, "", songName, 0, "", "", "", "", DateTime.Now, songPath, "", "", "", "", "", "", "", "", "", "", "", 1);
                         publicSongList.Add(song);
                     }
+                    else
+                    {
+                        SongData song = new SongData("", "", "", 0, "", "", "", "", DateTime.Now, songPath, "", "", "", "", "", "", "", "", "", "", "", 1);
+                        publicSongList.Add(song);
+                    }
                 }
             }
             catch (Exception ex)

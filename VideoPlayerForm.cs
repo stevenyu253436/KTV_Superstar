@@ -783,6 +783,13 @@ namespace DualScreenDemo
                     InitializeGraphBuilderSecondary();
                     RenderMediaFilePrimary(pathToPlay);
                     RenderMediaFileSecondary(pathToPlay);
+
+                    // 确保播放之前检查静音状态
+                    if (isMuted)
+                    {
+                        SetVolume(-10000); // 静音
+                    }
+
                     mediaControlPrimary.Run();
                     mediaControlSecondary.Run();
                 }

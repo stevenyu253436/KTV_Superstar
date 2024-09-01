@@ -43,8 +43,8 @@ namespace DualScreenDemo
 
             string serverAddress = File.ReadAllText(serverAddressFilePath).Trim();
 
-            // string qrContent = String.Format("http://{0}/{1}/index.html", serverAddress, randomFolderName);
-            string qrContent = String.Format("http://{0}:{1}/{2}/index.html", _localIP, _port, randomFolderName);
+            string qrContent = String.Format("http://{0}/{1}/index.html", serverAddress, randomFolderName);
+            // string qrContent = String.Format("http://{0}:{1}/{2}/index.html", _localIP, _port, randomFolderName);
             string qrImagePath = GenerateQRCode(qrContent, Path.Combine(baseDirectory, randomFolderName, "qrcode.png"));
 
             // 启动服务器的逻辑
