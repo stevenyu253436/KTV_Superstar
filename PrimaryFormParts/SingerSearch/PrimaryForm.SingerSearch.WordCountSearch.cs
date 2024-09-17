@@ -114,20 +114,19 @@ namespace DualScreenDemo
                 if (int.TryParse(searchText, out targetLength))
                 {
                     // 过滤出 ArtistA 或 ArtistB 名字长度匹配输入值的歌曲
-                    var searchResults = allSongs.Where(song => song.ArtistA.Replace(" ", "").Length == targetLength
-                                                                || song.ArtistB.Replace(" ", "").Length == targetLength)
-                                                .ToList();
+                    var searchResults = allArtists.Where(artist => artist.Name.Replace(" ", "").Length == targetLength).ToList();
+
                     currentPage = 0;
-                    currentSongList = searchResults;
+                    currentArtistList = searchResults;
                     totalPages = (int)Math.Ceiling((double)searchResults.Count / itemsPerPage);
 
                     multiPagePanel.currentPageIndex = 0;
-                    multiPagePanel.LoadSongs(currentSongList);
+                    multiPagePanel.LoadSingers(currentArtistList);
                 }
                 else
                 {
                     // 如果输入不是有效整数，可能需要显示错误或清空结果
-                    currentSongList.Clear();
+                    currentArtistList.Clear();
                 }
             };
 

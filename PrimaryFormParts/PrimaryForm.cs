@@ -206,7 +206,9 @@ namespace DualScreenDemo
 
         // private ListView listViewSongs;
         public List<SongData> allSongs; // This should be filled with your song data
+        public List<Artist> allArtists;
         public List<SongData> currentSongList;
+        public List<Artist> currentArtistList;
         public List<SongData> publicSongList;
         private List<SongData> guoYuSongs;
         private List<SongData> taiYuSongs;

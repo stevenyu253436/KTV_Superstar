@@ -145,6 +145,8 @@ namespace DualScreenDemo
                 this.Size = secondMonitor.Bounds.Size;
                 // this.DoubleBuffered = true;
             }
+
+            CheckMonitor(); // 調用 CheckMonitor 函數
         }
 
         protected override void OnShown(EventArgs e)
@@ -644,6 +646,8 @@ namespace DualScreenDemo
 
         public void SetPlayingSongList(List<SongData> songList)
         {
+            StopAndReleaseResources();
+
             playingSongList = songList;
             isUserPlaylistPlaying = playingSongList.Any();
             if (isUserPlaylistPlaying)
@@ -768,7 +772,7 @@ namespace DualScreenDemo
 
             try
             {
-                StopAndReleaseResources();
+                // StopAndReleaseResources();
 
                 if (!File.Exists(pathToPlay))
                 {
@@ -823,6 +827,8 @@ namespace DualScreenDemo
 
         public void SkipToNextSong()
         {
+            StopAndReleaseResources();
+
             if (isUserPlaylistPlaying && playingSongList.Count > 0)
             {
                 // 移除当前播放的歌曲
@@ -938,33 +944,33 @@ namespace DualScreenDemo
                     RemoveAllFilters(graphBuilderSecondary);
                 }
 
-                if (videoWindowPrimary != null)
-                {
-                    videoWindowPrimary.put_Visible(OABool.False);
-                    videoWindowPrimary.put_Owner(IntPtr.Zero);
-                    Marshal.ReleaseComObject(videoWindowPrimary);
-                    videoWindowPrimary = null;
-                }
+                // if (videoWindowPrimary != null)
+                // {
+                //     videoWindowPrimary.put_Visible(OABool.False);
+                //     videoWindowPrimary.put_Owner(IntPtr.Zero);
+                //     Marshal.ReleaseComObject(videoWindowPrimary);
+                //     videoWindowPrimary = null;
+                // }
 
-                if (videoWindowSecondary != null)
-                {
-                    videoWindowSecondary.put_Visible(OABool.False);
-                    videoWindowSecondary.put_Owner(IntPtr.Zero);
-                    Marshal.ReleaseComObject(videoWindowSecondary);
-                    videoWindowSecondary = null;
-                }
+                // if (videoWindowSecondary != null)
+                // {
+                //     videoWindowSecondary.put_Visible(OABool.False);
+                //     videoWindowSecondary.put_Owner(IntPtr.Zero);
+                //     Marshal.ReleaseComObject(videoWindowSecondary);
+                //     videoWindowSecondary = null;
+                // }
 
                 // 释放视频渲染器
-                if (videoRendererPrimary != null)
-                {
-                    Marshal.ReleaseComObject(videoRendererPrimary);
-                    videoRendererPrimary = null;
-                }
-                if (videoRendererSecondary != null)
-                {
-                    Marshal.ReleaseComObject(videoRendererSecondary);
-                    videoRendererSecondary = null;
-                }
+                // if (videoRendererPrimary != null)
+                // {
+                //     Marshal.ReleaseComObject(videoRendererPrimary);
+                //     videoRendererPrimary = null;
+                // }
+                // if (videoRendererSecondary != null)
+                // {
+                //     Marshal.ReleaseComObject(videoRendererSecondary);
+                //     videoRendererSecondary = null;
+                // }
 
                 // 释放 LAV 分离器和解码器
                 if (lavSplitterPrimary != null)
@@ -994,16 +1000,16 @@ namespace DualScreenDemo
                 }
 
                 // 释放 VMR9 渲染器
-                if (vmr9Primary != null)
-                {
-                    Marshal.ReleaseComObject(vmr9Primary);
-                    vmr9Primary = null;
-                }
-                if (vmr9Secondary != null)
-                {
-                    Marshal.ReleaseComObject(vmr9Secondary);
-                    vmr9Secondary = null;
-                }
+                // if (vmr9Primary != null)
+                // {
+                //     Marshal.ReleaseComObject(vmr9Primary);
+                //     vmr9Primary = null;
+                // }
+                // if (vmr9Secondary != null)
+                // {
+                //     Marshal.ReleaseComObject(vmr9Secondary);
+                //     vmr9Secondary = null;
+                // }
                 
                 // 释放输出引脚
                 // if (outputPinPrimary != null)

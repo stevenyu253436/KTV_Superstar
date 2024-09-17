@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.IO; // 添加这个行
 
@@ -9,11 +10,20 @@ namespace DualScreenDemo
 {
     public class MultiPagePanel : Panel
     {
+        // 枚舉類型 ViewMode 用於區分顯示“歌星”還是“歌曲”
+        public enum ViewMode
+        {
+            Singer,
+            Song
+        }
+
+        private ViewMode currentViewMode = ViewMode.Song; // 默認為顯示歌曲
         public ImagePanel prevPagePanel;
         public ImagePanel currentPagePanel;
         public ImagePanel nextPagePanel;
 
         private List<SongData> currentSongList;
+        private List<Artist> currentSingerList;
         private List<PlayState> currentPlayStates;
         private const int SongsPerPage = 16;
         private const int Rows = 8;
@@ -90,36 +100,56 @@ namespace DualScreenDemo
             this.Controls.Add(nextPagePanel);
         }
 
+        public void LoadSingers(List<Artist> singerList)
+        {
+            currentSingerList = singerList;
+            currentViewMode = ViewMode.Singer;
+            currentPageIndex = 0;
+            LoadPage(currentPageIndex - 1);
+            LoadPage(currentPageIndex);
+            LoadPage(currentPageIndex + 1);
+        }
+
         public void LoadSongs(List<SongData> songs)
         {
             currentSongList = songs;
-            usePlayStates = false;  // 不使用播放状态
-            LoadPage(currentPageIndex - 1);  // Load the previous page
-            LoadPage(currentPageIndex);      // Load the current page
-            LoadPage(currentPageIndex + 1);  // Load the next page
+            currentViewMode = ViewMode.Song;
+            usePlayStates = false;
+            LoadPage(currentPageIndex - 1);
+            LoadPage(currentPageIndex);
+            LoadPage(currentPageIndex + 1);
         }
 
         public void LoadPlayedSongs(List<SongData> songs, List<PlayState> playStates)
         {
             currentSongList = songs;
             currentPlayStates = playStates;
-            usePlayStates = true;  // 使用播放状态
-            LoadPageWithStates(currentPageIndex - 1);  // Load the previous page
-            LoadPageWithStates(currentPageIndex);      // Load the current page
-            LoadPageWithStates(currentPageIndex + 1);  // Load the next page
+            currentViewMode = ViewMode.Song;
+            usePlayStates = true;
+            LoadPageWithStates(currentPageIndex - 1);
+            LoadPageWithStates(currentPageIndex);
+            LoadPageWithStates(currentPageIndex + 1);
         }
 
         private void LoadPage(int pageIndex)
         {
-            // Identify the panel that should be loaded based on pageIndex
             ImagePanel targetPanel = IdentifyTargetPanel(pageIndex);
             targetPanel.Controls.Clear();
 
-            // Check if the pageIndex is within the valid range
-            if (pageIndex < 0 || pageIndex * SongsPerPage >= currentSongList.Count)
+            if (currentViewMode == ViewMode.Singer)
             {
-                return;  // If the page index is out of range, exit the method
+                LoadSingersPage(pageIndex, targetPanel);
             }
+            else if (currentViewMode == ViewMode.Song)
+            {
+                LoadSongsPage(pageIndex, targetPanel);
+            }
+        }
+
+
+        private void LoadSongsPage(int pageIndex, ImagePanel targetPanel)
+        {
+            if (pageIndex < 0 || pageIndex * SongsPerPage >= currentSongList.Count) return;
 
             int start = pageIndex * SongsPerPage;
             int end = Math.Min(start + SongsPerPage, currentSongList.Count);
@@ -131,6 +161,52 @@ namespace DualScreenDemo
                 var song = currentSongList[i];
                 AddSongLabel(song, row, column, targetPanel);
             }
+        }
+
+        private void LoadSingersPage(int pageIndex, ImagePanel targetPanel)
+        {
+            int totalSingers = currentSingerList.Count;
+            const int SingersPerPage = SongsPerPage;
+
+            if (pageIndex < 0 || pageIndex * SingersPerPage >= totalSingers) return;
+
+            int start = pageIndex * SingersPerPage;
+            int end = Math.Min(start + SingersPerPage, totalSingers);
+
+            for (int i = start; i < end; i++)
+            {
+                int row = (i % SingersPerPage) % Rows;
+                int column = (i % SingersPerPage) / Rows;
+                Artist artist = currentSingerList[i];  // 直接從 currentSingerList 中獲取 Artist 對象
+
+                Label singerLabel = new Label()
+                {
+                    Text = artist.Name,  // 顯示歌手的名字
+                    ForeColor = Color.White,
+                    BackColor = Color.Transparent,
+                    Font = new Font("微軟正黑體", 24, FontStyle.Bold),
+                    Location = new Point(30 + column * 550, row * 64),
+                    Size = new Size(510, 40),
+                    TextAlign = ContentAlignment.TopLeft,
+                    Tag = artist.Name  // 將歌手名存儲在標籤的 Tag 中
+                };
+
+                singerLabel.Click += (sender, e) =>
+                {
+                    string clickedSinger = ((Label)sender).Tag.ToString();
+                    LoadSongsBySinger(clickedSinger);  // 根據歌手名加載該歌手的歌曲
+                };
+
+                PrimaryForm.ResizeAndPositionControl(singerLabel, singerLabel.Location.X, singerLabel.Location.Y, singerLabel.Size.Width, singerLabel.Size.Height);
+                targetPanel.Controls.Add(singerLabel);
+            }
+        }
+
+        public void LoadSongsBySinger(string singerName)
+        {
+            // 通過歌手名從 SongManager 或 ArtistManager 加載該歌手的所有歌曲
+            var songsBySinger = SongListManager.Instance.GetSongsByArtist(singerName); 
+            LoadSongs(songsBySinger);  // 將歌曲加載到界面上
         }
 
         private void LoadPageWithStates(int pageIndex)
@@ -511,39 +587,60 @@ namespace DualScreenDemo
 
         public void LoadPreviousPage()
         {
+            // 如果還有上一頁，才進行頁面加載
             if (currentPageIndex > 0)
+            {
                 currentPageIndex--;
 
-            if (usePlayStates)
-            {
-                LoadPageWithStates(currentPageIndex - 1);
-                LoadPageWithStates(currentPageIndex);
-                LoadPageWithStates(currentPageIndex + 1);
-            }
-            else
-            {
-                LoadPage(currentPageIndex - 1);
-                LoadPage(currentPageIndex);
-                LoadPage(currentPageIndex + 1);
+                // 根據播放狀態和當前的ViewMode來加載上一頁
+                if (usePlayStates && currentViewMode == ViewMode.Song)
+                {
+                    LoadPageWithStates(currentPageIndex - 1);
+                    LoadPageWithStates(currentPageIndex);
+                    LoadPageWithStates(currentPageIndex + 1);
+                }
+                else
+                {
+                    LoadPage(currentPageIndex - 1);
+                    LoadPage(currentPageIndex);
+                    LoadPage(currentPageIndex + 1);
+                }
             }
         }
 
         public void LoadNextPage()
         {
-            if (currentPageIndex < (currentSongList.Count - 1) / SongsPerPage)
+            int totalPages;
+
+            // 確定根據當前 ViewMode 計算總頁數
+            if (currentViewMode == ViewMode.Singer)
+            {
+                int totalSingers = currentSingerList.Count;  // 直接使用 currentSingerList 的數量
+                totalPages = (int)Math.Ceiling((double)totalSingers / SongsPerPage);
+            }
+            else // ViewMode.Song
+            {
+                totalPages = (int)Math.Ceiling((double)currentSongList.Count / SongsPerPage);
+            }
+
+            // 如果還有下一頁，才進行頁面加載
+            if (currentPageIndex < totalPages - 1)
+            {
                 currentPageIndex++;
 
-            if (usePlayStates)
-            {
-                LoadPageWithStates(currentPageIndex - 1);
-                LoadPageWithStates(currentPageIndex);
-                LoadPageWithStates(currentPageIndex + 1);
-            }
-            else
-            {
-                LoadPage(currentPageIndex - 1);
-                LoadPage(currentPageIndex);
-                LoadPage(currentPageIndex + 1);
+                // 根據播放狀態和當前的ViewMode來加載下一頁
+                if (usePlayStates && currentViewMode == ViewMode.Song)
+                {
+                    LoadPageWithStates(currentPageIndex - 1);
+                    LoadPageWithStates(currentPageIndex);
+                    LoadPageWithStates(currentPageIndex + 1);
+                }
+                else
+                {
+                    LoadPage(currentPageIndex - 1);
+                    LoadPage(currentPageIndex);
+                    LoadPage(currentPageIndex + 1);
+                }
             }
         }
     }

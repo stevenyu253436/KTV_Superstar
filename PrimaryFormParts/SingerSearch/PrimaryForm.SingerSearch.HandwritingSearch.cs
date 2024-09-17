@@ -124,15 +124,14 @@ namespace DualScreenDemo
                 string searchText = handwritingInputBoxForSingers.Text;
                 // 假设 allSongs 是存储所有歌曲数据的 List<SongData>
                 // 使用 Union 来合并来自 ArtistA 和 ArtistB 的搜索结果
-                var searchResults = allSongs.Where(song => song.ArtistA.StartsWith(searchText))
-                                            .Union(allSongs.Where(song => song.ArtistB.StartsWith(searchText)))
-                                            .ToList();
+                var searchResults = allArtists.Where(artist => artist.Name.StartsWith(searchText)).ToList();
+
                 currentPage = 0;
-                currentSongList = searchResults;
+                currentArtistList = searchResults;
                 totalPages = (int)Math.Ceiling((double)searchResults.Count / itemsPerPage);
 
                 multiPagePanel.currentPageIndex = 0;
-                multiPagePanel.LoadSongs(currentSongList);
+                multiPagePanel.LoadSingers(currentArtistList);
             };
         }    
 

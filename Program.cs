@@ -88,6 +88,7 @@ namespace DualScreenDemo
 
                 primaryForm = new PrimaryForm();
                 primaryForm.allSongs = songListManager.AllSongs;
+                primaryForm.allArtists = artistManager.AllArtists;
 
                 // 設置 PrimaryForm 的位置和大小
                 primaryForm.StartPosition = FormStartPosition.Manual;

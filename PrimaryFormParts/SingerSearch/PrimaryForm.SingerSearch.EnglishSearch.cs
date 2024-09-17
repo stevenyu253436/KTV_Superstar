@@ -308,15 +308,14 @@ namespace DualScreenDemo
                 inputBoxEnglishSingers.TextChanged += (sender, e) =>
                 {
                     string searchText = inputBoxEnglishSingers.Text;
-                    var searchResults = allSongs.Where(song => song.ArtistA.Replace(" ", "").StartsWith(searchText))
-                                                .Union(allSongs.Where(song => song.ArtistB.Replace(" ", "").StartsWith(searchText)))
-                                                .ToList();
+                    var searchResults = allArtists.Where(artist => artist.Name.Replace(" ", "").StartsWith(searchText)).ToList();
+                    
                     currentPage = 0;
-                    currentSongList = searchResults;
+                    currentArtistList = searchResults;
                     totalPages = (int)Math.Ceiling((double)searchResults.Count / itemsPerPage);
 
                     multiPagePanel.currentPageIndex = 0;
-                    multiPagePanel.LoadSongs(currentSongList);
+                    multiPagePanel.LoadSingers(currentArtistList);
                 };
 
                 this.Controls.Add(inputBoxEnglishSingers);

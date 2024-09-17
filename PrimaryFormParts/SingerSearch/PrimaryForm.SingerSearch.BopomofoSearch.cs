@@ -366,14 +366,14 @@ namespace DualScreenDemo
                 inputBoxZhuYinSingers.TextChanged += (sender, e) =>
                 {
                     string searchText = inputBoxZhuYinSingers.Text;
-                    var searchResults = allSongs.Where(song => song.ArtistAPhonetic.StartsWith(searchText) ||
-                                                              (!string.IsNullOrWhiteSpace(song.ArtistB) && song.ArtistBPhonetic.StartsWith(searchText))).ToList();
+                    var searchResults = allArtists.Where(artist => artist.Phonetic.StartsWith(searchText)).ToList();  // 使用 ToList() 進行轉換
+
                     currentPage = 0;
-                    currentSongList = searchResults;
+                    currentArtistList = searchResults;
                     totalPages = (int)Math.Ceiling((double)searchResults.Count / itemsPerPage);
 
                     multiPagePanel.currentPageIndex = 0;
-                    multiPagePanel.LoadSongs(currentSongList);
+                    multiPagePanel.LoadSingers(currentArtistList);
                 };
 
                 this.Controls.Add(inputBoxZhuYinSingers);
