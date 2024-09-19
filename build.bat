@@ -18,6 +18,6 @@ for /R %%f in (*.cs) do (
 )
 
 :: Now call the csc.exe compiler with the constructed command
-csc.exe /out:"D:\KTV_SuperStar - 2\DualScreenKTVPlayStation.exe" /win32icon:ksonglover.ico %refs% %sources%
+csc.exe /out:D:\KTV_SuperStar\DualScreenKTVPlayStation.exe /win32icon:ksonglover.ico %refs% %sources%
 
 endlocal

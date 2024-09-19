@@ -15,5 +15,5 @@ Filter: LAV Splitter
   Pin: Input
   Pin: Video
   Pin: Audio
-Filter: C:\video\BGM11.mpg
+Filter: C:\video\BGM28.mpg
   Pin: Output

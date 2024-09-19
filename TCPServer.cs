@@ -139,11 +139,11 @@ namespace DualScreenDemo
                 case "紅色":
                     return Color.Red;
                 case "綠色":
-                    return Color.Green;
+                    return Color.LightGreen;
                 case "黑色":
                     return Color.Black;
                 case "藍色":
-                    return Color.Blue;
+                    return Color.LightBlue;
                 default:
                     return Color.Black; // 默认颜色
             }

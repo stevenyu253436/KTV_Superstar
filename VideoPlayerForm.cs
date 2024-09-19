@@ -673,8 +673,18 @@ namespace DualScreenDemo
 
         private static async Task UpdateMarqueeTextForCurrentSong(SongData song)
         {
-            string text = String.Format("正在播放：{0} - 曲號：{1}", song.Song, song.SongNumber);
-            // overlayForm.UpdateMarqueeText(text, OverlayForm.MarqueeStartPosition.Middle);
+            string text;
+
+            if (string.IsNullOrEmpty(song?.Song))
+            {
+                text = string.Empty;
+            }
+            else
+            {
+                text = String.Format("正在播放：{0} - 曲號：{1}", song.Song, song.SongNumber);
+            }
+
+            // 更新顯示
             overlayForm.UpdateSongDisplayLabel(text);
 
             // 等待一段时间，比如5秒
