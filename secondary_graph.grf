@@ -15,5 +15,5 @@ Filter: LAV Splitter
   Pin: Input
   Pin: Video
   Pin: Audio
-Filter: C:\video\BGM28.mpg
+Filter: C:\video\100017-董育君&莊振凱-因為愛你-台語-vL-100-11000001.mpg
   Pin: Output

@@ -1463,6 +1463,28 @@ namespace DualScreenDemo
                 }
             }
         }
+        public void SetBalance(int balance)
+        {
+            if (audioRenderer != null)
+            {
+                IBasicAudio basicAudio = audioRenderer as IBasicAudio;
+                if (basicAudio != null)
+                {
+                    // 確保 balance 在 -10000 到 +10000 之間
+                    balance = Math.Max(-10000, Math.Min(balance, 10000));
+                    basicAudio.put_Balance(balance);
+                    Console.WriteLine($"Balance set to {balance}");
+                }
+                else
+                {
+                    Console.WriteLine("audioRenderer does not implement IBasicAudio");
+                }
+            }
+            else
+            {
+                Console.WriteLine("audioRenderer is null");
+            }
+        }
 
         // 获取当前音量的方法
         public int GetVolume()
@@ -1482,23 +1504,30 @@ namespace DualScreenDemo
 
         private bool isVocalRemoved = false;
 
+
+
         public void ToggleVocalRemoval()
         {
+            Console.WriteLine("ToggleVocalRemoval called");
             if (isVocalRemoved)
             {
-                // 恢复正常音量
-                SetChannelVolume(0, 0); // 左声道
-                SetChannelVolume(1, 0); // 右声道
+                // 恢复正常平衡
+                SetBalance(0); // 居中平衡，左右聲道均衡
                 isVocalRemoved = false;
+                Console.WriteLine("Vocal removal disabled.");
+                OverlayForm.MainForm.HideOriginalSongLabel();
             }
             else
             {
-                // 设置相反相位以消除人声
-                SetChannelVolume(0, 20); // 左声道降低10dB
-                SetChannelVolume(1, 20);  // 右声道增加10dB
+                // 偏向右聲道，靜音左聲道
+                SetBalance(10000); // 全右平衡，左聲道靜音
                 isVocalRemoved = true;
+                Console.WriteLine("Vocal removal enabled.");
+                OverlayForm.MainForm.ShowOriginalSongLabel();
             }
         }
+
+
 
         public void SetChannelVolume(int channel, int volume)
         {

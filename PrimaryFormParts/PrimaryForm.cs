@@ -2304,11 +2304,15 @@ namespace DualScreenDemo
             }
         }
 
-        private void OriginalSongButton_Click(object sender, EventArgs e)
+        public void OriginalSongButton_Click(object sender, EventArgs e)
         {
-            // 假设 trackIndex 是你要切换的音轨索引
-            // int trackIndex = 1; // 例如，索引 1 可能是伴唱音轨
-            videoPlayerForm.ToggleVocalRemoval(); // audioFilter 是你的音频解码器或分离器过滤器
+            Console.WriteLine("OriginalSongButton_Click triggered"); // 日誌輸出，便於調試
+
+            // 切換標籤的可見性
+            OverlayForm.MainForm.ToggleOriginalSongLabel();
+
+            // 可選：根據標籤的狀態，切換音訊處理
+            videoPlayerForm.ToggleVocalRemoval();
         }
 
         private void ReplayButton_Click(object sender, EventArgs e)

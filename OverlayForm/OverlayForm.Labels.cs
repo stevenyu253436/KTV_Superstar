@@ -15,6 +15,7 @@ namespace DualScreenDemo
         private List<Label> displayLabels;
         public Label pauseLabel;
         public Label muteLabel; // New mute label
+        public Label originalSongLabel;
         public Label volumeUpLabel; // New volume up label
         public Label volumeDownLabel; // New volume down label
         private System.Windows.Forms.Timer volumeUpTimer = new System.Windows.Forms.Timer();
@@ -55,6 +56,7 @@ namespace DualScreenDemo
             InitializeDisplayLabels();
             InitializePauseLabel();
             InitializeMuteLabel(); // Initialize the new mute label
+            InitializeOriginalSongLabel(); // 初始化原唱标签
             InitializeVolumeUpLabel(); // Initialize the volume up label
             InitializeVolumeDownLabel(); // Initialize the volume down label
             InitializeMicUpLabel(); // Initialize the microphone up label
@@ -314,6 +316,39 @@ namespace DualScreenDemo
                 muteLabel.Location = new Point(
                     (this.Width - muteLabel.Width) / 2,
                     100
+                );
+            };
+        }
+
+        private void InitializeOriginalSongLabel()
+        {
+            originalSongLabel = new Label
+            {
+                Text = "伴唱",
+                Font = new Font("Microsoft JhengHei", 50, FontStyle.Bold), // 设置字体样式
+                ForeColor = Color.Blue, // 设置文字颜色
+                BackColor = Color.Transparent,
+                AutoSize = true,
+                Visible = false // 初始设置为不可见
+            };
+
+            // 设置标签位置到界面中央
+            originalSongLabel.Location = new Point(
+                (this.Width - originalSongLabel.Width) / 2,
+                (this.Height - originalSongLabel.Height) / 2
+            );
+
+            // 确保标签在最前面
+            originalSongLabel.BringToFront();
+
+            this.Controls.Add(originalSongLabel);
+
+            // 确保在窗口大小变化时，标签保持在中央
+            this.Resize += (s, e) =>
+            {
+                originalSongLabel.Location = new Point(
+                    (this.Width - originalSongLabel.Width) / 2,
+                    (this.Height - originalSongLabel.Height) / 2
                 );
             };
         }
@@ -878,6 +913,20 @@ namespace DualScreenDemo
         public void HideMuteLabel()
         {
             muteLabel.Visible = false;
+        }
+        public void ShowOriginalSongLabel()
+        {
+            originalSongLabel.Visible = true;
+        }
+
+        public void HideOriginalSongLabel()
+        {
+            originalSongLabel.Visible = false;
+        }
+
+        public void ToggleOriginalSongLabel()
+        {
+            originalSongLabel.Visible = !originalSongLabel.Visible;
         }
 
         // 显示音量+标签
