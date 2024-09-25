@@ -26,7 +26,7 @@ namespace DualScreenDemo
             zhuyinSearchButton.BackgroundImage = zhuyinSearchNormalBackground;
             englishSearchButton.BackgroundImage = englishSearchNormalBackground;
             pinyinSearchButton.BackgroundImage = pinyinSearchNormalBackground;
-            strokeCountSearchButton.BackgroundImage = strokeCountSearchNormalBackground;
+            wordCountSearchButton.BackgroundImage = wordCountSearchNormalBackground;
             handWritingSearchButton.BackgroundImage = handWritingSearchActiveBackground;
 
             // 启用双缓冲以减少闪烁
@@ -45,6 +45,7 @@ namespace DualScreenDemo
             SetZhuYinSingersAndButtonsVisibility(false);
             SetEnglishSingersAndButtonsVisibility(false);
             SetPinYinSingersAndButtonsVisibility(false);
+            SetPictureBoxArtistSearchAndButtonsVisibility(false);
             SetHandWritingForSingersAndButtonsVisibility(true);
 
             this.ResumeLayout();

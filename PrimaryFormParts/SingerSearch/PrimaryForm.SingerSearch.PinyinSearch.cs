@@ -27,7 +27,7 @@ namespace DualScreenDemo
             zhuyinSearchButton.BackgroundImage = zhuyinSearchNormalBackground;
             englishSearchButton.BackgroundImage = englishSearchNormalBackground;
             pinyinSearchButton.BackgroundImage = pinyinSearchActiveBackground;
-            strokeCountSearchButton.BackgroundImage = strokeCountSearchNormalBackground;
+            wordCountSearchButton.BackgroundImage = wordCountSearchNormalBackground;
             handWritingSearchButton.BackgroundImage = handWritingSearchNormalBackground;
 
             // Load the configuration data
@@ -41,6 +41,7 @@ namespace DualScreenDemo
             SetZhuYinSingersAndButtonsVisibility(false);
             SetEnglishSingersAndButtonsVisibility(false);
             SetPinYinSingersAndButtonsVisibility(true);
+            SetPictureBoxArtistSearchAndButtonsVisibility(false);
             pictureBoxPinYinSingers.Visible = true;
         }
 

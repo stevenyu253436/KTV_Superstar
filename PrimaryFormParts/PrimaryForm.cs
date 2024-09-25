@@ -1224,21 +1224,6 @@ namespace DualScreenDemo
             candidateListBox.Visible = true;
         }
 
-        private void WordCountSearchButton_Click(object sender, EventArgs e)
-        {
-            // Toggle the visibility state for the next action.
-            bool shouldBeVisible = !pictureBoxArtistSearch.Visible;
-
-            // Update PictureBox image only if it should be visible.
-            if (shouldBeVisible)
-            {
-                ShowImageOnPictureBoxArtistSearch(Path.Combine(Application.StartupPath, @"themes\superstar\6-1.png"));
-            }
-
-            SetPictureBoxArtistSearchAndButtonsVisibility(shouldBeVisible);
-            pictureBoxArtistSearch.Visible = shouldBeVisible;
-        }
-
         private void BtnShowAll_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Show All button clicked!");

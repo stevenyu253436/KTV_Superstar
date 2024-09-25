@@ -15,9 +15,12 @@ namespace DualScreenDemo
         private Button pinyinSearchButton;
         private Bitmap pinyinSearchNormalBackground;
         private Bitmap pinyinSearchActiveBackground;
-        private Button strokeCountSearchButton;
-        private Bitmap strokeCountSearchNormalBackground;
-        private Bitmap strokeCountSearchActiveBackground;
+        // private Button strokeCountSearchButton;
+        // private Bitmap strokeCountSearchNormalBackground;
+        // private Bitmap strokeCountSearchActiveBackground;
+        private Button wordCountSearchButton;
+        private Bitmap wordCountSearchNormalBackground;
+        private Bitmap wordCountSearchActiveBackground;
         private Button handWritingSearchButton;
         private Bitmap handWritingSearchNormalBackground;
         private Bitmap handWritingSearchActiveBackground;
@@ -63,7 +66,7 @@ namespace DualScreenDemo
         
         private void SetSingerSearchButtonsVisibility(bool isVisible)
         {
-            Button[] singerSearchButtons = { zhuyinSearchButton, englishSearchButton, pinyinSearchButton, strokeCountSearchButton, handWritingSearchButton };
+            Button[] singerSearchButtons = { zhuyinSearchButton, englishSearchButton, pinyinSearchButton, wordCountSearchButton, handWritingSearchButton };
 
             foreach (var button in singerSearchButtons)
             {
@@ -86,7 +89,7 @@ namespace DualScreenDemo
             // 初始化拼音查詢按钮
             InitializeSearchButton(ref pinyinSearchButton, "pinyinSearchButton", 1214, 356, 209, 58, ref pinyinSearchNormalBackground, ref pinyinSearchActiveBackground, normalStateImageArtistQuery, mouseDownImageArtistQuery, PinyinSingerSearchButton_Click);
 
-            InitializeSearchButton(ref strokeCountSearchButton, "strokeCountSearchButton", 1214, 418, 209, 59, ref strokeCountSearchNormalBackground, ref strokeCountSearchActiveBackground, normalStateImageArtistQuery, mouseDownImageArtistQuery, WordCountSearchButton_Click);
+            InitializeSearchButton(ref wordCountSearchButton, "strokeCountSearchButton", 1214, 418, 209, 59, ref wordCountSearchNormalBackground, ref wordCountSearchActiveBackground, normalStateImageArtistQuery, mouseDownImageArtistQuery, WordCountSearchButton_Click);
 
             InitializeSearchButton(ref handWritingSearchButton, "handWritingSearchButton", 1214, 481, 209, 59, ref handWritingSearchNormalBackground, ref handWritingSearchActiveBackground, normalStateImageArtistQuery, mouseDownImageArtistQuery, HandWritingSearchButtonForSingers_Click);
         }

@@ -31,7 +31,7 @@ namespace DualScreenDemo
             zhuyinSearchButton.BackgroundImage = zhuyinSearchNormalBackground;
             englishSearchButton.BackgroundImage = englishSearchActiveBackground;
             pinyinSearchButton.BackgroundImage = pinyinSearchNormalBackground;
-            strokeCountSearchButton.BackgroundImage = strokeCountSearchNormalBackground;
+            wordCountSearchButton.BackgroundImage = wordCountSearchNormalBackground;
             handWritingSearchButton.BackgroundImage = handWritingSearchNormalBackground;
 
             bool shouldBeVisible = !pictureBoxEnglishSingers.Visible;
@@ -46,6 +46,7 @@ namespace DualScreenDemo
             SetPinYinSingersAndButtonsVisibility(false);
             SetHandWritingForSingersAndButtonsVisibility(false);
             SetEnglishSingersAndButtonsVisibility(true);
+            SetPictureBoxArtistSearchAndButtonsVisibility(false);
             pictureBoxEnglishSingers.Visible = true;
         }
 

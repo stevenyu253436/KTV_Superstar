@@ -144,6 +144,31 @@ namespace DualScreenDemo
                 inputBoxArtistSearch.Text += button.Tag.ToString();
             }
         }
+        
+        private void WordCountSearchButton_Click(object sender, EventArgs e)
+        {
+            zhuyinSearchButton.BackgroundImage = zhuyinSearchNormalBackground;
+            englishSearchButton.BackgroundImage = englishSearchNormalBackground;
+            pinyinSearchButton.BackgroundImage = pinyinSearchNormalBackground;
+            wordCountSearchButton.BackgroundImage = wordCountSearchActiveBackground;
+            handWritingSearchButton.BackgroundImage = handWritingSearchNormalBackground;
+
+            // Toggle the visibility state for the next action.
+            bool shouldBeVisible = !pictureBoxArtistSearch.Visible;
+
+            // Update PictureBox image only if it should be visible.
+            if (shouldBeVisible)
+            {
+                ShowImageOnPictureBoxArtistSearch(Path.Combine(Application.StartupPath, @"themes\superstar\6-1.png"));
+            }
+
+            SetEnglishSingersAndButtonsVisibility(false);
+            SetPinYinSingersAndButtonsVisibility(false);
+            SetHandWritingForSingersAndButtonsVisibility(false);
+            SetZhuYinSingersAndButtonsVisibility(false);
+            SetPictureBoxArtistSearchAndButtonsVisibility(shouldBeVisible);
+            pictureBoxArtistSearch.Visible = shouldBeVisible;
+        }
 
         private void CloseButtonArtistSearch_Click(object sender, EventArgs e)
         {
