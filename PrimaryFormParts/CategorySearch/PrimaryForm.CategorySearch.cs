@@ -191,7 +191,7 @@ namespace DualScreenDemo
             SetPinYinSongsAndButtonsVisibility(false);
             SetPictureBoxToggleLightAndButtonsVisibility(false);
             SetPictureBoxSceneSoundEffectsAndButtonsVisibility(false);
-            TogglePictureBoxCategoryButtonsVisibility();
+            SetPictureBoxCategoryAndButtonsVisibility(true);
 
             // 切换pictureBoxQRCode的可见性
             if (pictureBoxQRCode != null)
