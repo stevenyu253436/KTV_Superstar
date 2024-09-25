@@ -21,7 +21,7 @@ namespace DualScreenDemo
             this.songListManager = songListManager;
         }
 
-        public void ProcessData(string indata)
+        public async Task ProcessData(string indata)
         {
             string trimmedData = indata.Trim('?');
             SerialPortManager.LogData(trimmedData);
