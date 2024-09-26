@@ -23,9 +23,6 @@ namespace DualScreenDemo
 
         public async Task ProcessData(string indata)
         {
-            string trimmedData = indata.Trim('?');
-            SerialPortManager.LogData(trimmedData);
-
             string filePath = Path.Combine(Application.StartupPath, "dataLog.txt");
             if (CheckLogForShutdown(filePath))
             {
@@ -33,7 +30,7 @@ namespace DualScreenDemo
                 ShutdownComputer();
             }
 
-            switch (trimmedData)
+            switch (indata)
             {
                 case "A261A4":
                     HandleInputA();
@@ -115,9 +112,9 @@ namespace DualScreenDemo
                     InvokeAction(() => OverlayForm.MainForm.ShowTintLabel());
                     break;
                 default:
-                    if (Regex.IsMatch(trimmedData, @"^A23\d+A4$")) // 确保trimmedData符合格式A23xA4
+                    if (Regex.IsMatch(indata, @"^A23\d+A4$")) // 确保trimmedData符合格式A23xA4
                     {
-                        HandleNumberInput(trimmedData);
+                        HandleNumberInput(indata);
                     }
                     break;
             }

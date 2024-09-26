@@ -5,16 +5,13 @@ using System.Windows.Forms; // 添加这一行
 using System.Threading.Tasks; // 添加这一行
 using System.IO; // 添加此行
 using System.Diagnostics; // 添加此行
-using System.Collections.Concurrent;
-
+z
 namespace DualScreenDemo
 {
     public class SerialPortManager
     {
         internal static SerialPort mySerialPort;
         private readonly CommandHandler commandHandler;
-        private readonly ConcurrentQueue<string> dataQueue = new ConcurrentQueue<string>();
-        private bool processingData = false;
 
         public SerialPortManager(CommandHandler commandHandler)
         {
@@ -78,35 +75,7 @@ namespace DualScreenDemo
             Console.WriteLine("Data Received (Hex):");
             Console.WriteLine(indata);
 
-            dataQueue.Enqueue(indata);
-
-            if (!processingData)
-            {
-                processingData = true;
-                Task.Run(() => ProcessQueueData());
-            }
-        }
-
-        private async Task ProcessQueueData()
-        {
-            try
-            {
-                while (!dataQueue.IsEmpty)
-                {
-                    if (dataQueue.TryDequeue(out string data))
-                    {
-                        await commandHandler.ProcessData(data);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error processing queue data: {ex.Message}");
-            }
-            finally
-            {
-                processingData = false;
-            }
+            Task.Run(() => commandHandler.ProcessData(indata));
         }
 
         public static void CloseSerialPortSafely()
