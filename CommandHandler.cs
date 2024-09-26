@@ -257,6 +257,8 @@ namespace DualScreenDemo
                     {
                         ClearDisplay();
                         OverlayForm.MainForm.displayLabel.Text = String.Format("已點歌曲\n{0}", song);
+                        OverlayForm.MainForm.AddSongToPlaylist(song);
+                        OverlayForm.displayTimer.Start();
                     }
                     else
                     {
