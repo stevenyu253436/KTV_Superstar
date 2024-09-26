@@ -765,6 +765,8 @@ namespace DualScreenDemo
             // 在此调用 DisplayQRCodeOnOverlay 方法来显示 QR 码
             overlayForm.DisplayQRCodeOnOverlay(HttpServer.randomFolderPath);
 
+            overlayForm.HidePauseLabel();
+
             // // 使用 MediaInfo 检查文件格式
             // var mediaInfo = new MediaInfo();
             // mediaInfo.Open(pathToPlay);

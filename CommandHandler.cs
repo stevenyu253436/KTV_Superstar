@@ -229,7 +229,6 @@ namespace DualScreenDemo
                 {
                     OverlayForm.MainForm.OnUserInput(input);
                 }
-                // readyForSongListInput = false; // Reset the flag after processing the input
             }
             else
             {
@@ -296,7 +295,6 @@ namespace DualScreenDemo
                 {
                     OverlayForm.MainForm.OnUserInput(input);
                 }
-                // readyForSongListInput = false; // Reset the flag after processing the input
             }
             else
             {

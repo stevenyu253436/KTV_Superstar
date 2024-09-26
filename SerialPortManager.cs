@@ -89,15 +89,24 @@ namespace DualScreenDemo
 
         private async Task ProcessQueueData()
         {
-            while (!dataQueue.IsEmpty)
+            try
             {
-                if (dataQueue.TryDequeue(out string data))
+                while (!dataQueue.IsEmpty)
                 {
-                    await commandHandler.ProcessData(data);
+                    if (dataQueue.TryDequeue(out string data))
+                    {
+                        await commandHandler.ProcessData(data);
+                    }
                 }
             }
-
-            processingData = false;
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error processing queue data: {ex.Message}");
+            }
+            finally
+            {
+                processingData = false;
+            }
         }
 
         public static void CloseSerialPortSafely()
