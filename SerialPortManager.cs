@@ -5,7 +5,7 @@ using System.Windows.Forms; // 添加这一行
 using System.Threading.Tasks; // 添加这一行
 using System.IO; // 添加此行
 using System.Diagnostics; // 添加此行
-z
+
 namespace DualScreenDemo
 {
     public class SerialPortManager

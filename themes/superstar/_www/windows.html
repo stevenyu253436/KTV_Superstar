@@ -165,8 +165,8 @@
       <div class="card" onclick="location.href='search-song.html'">
         <img src="手機點歌/首頁-04.png" alt="Search Song">
       </div>
-      <div class="card" onclick="location.href='clicked-song.html'">
-        <img src="手機點歌/首頁-05.png" alt="Clicked Song">
+      <div class="card" onclick="orderSongAndNavigate()">
+          <img src="手機點歌/首頁-05.png" alt="Clicked Song">
       </div>
       <div class="card" onclick="location.href='my-favorite.html'">
         <img src="手機點歌/首頁-06.png" alt="My Favorite">
@@ -194,6 +194,32 @@
   menuToggle.addEventListener('click', () => {
       menu.classList.toggle('active');
   });
+
+  function orderSongAndNavigate() {
+        // 先發送 POST 請求到本機伺服器
+        fetch('/ordered-song', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: null
+          })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Request successful:', data);
+            // 請求成功後導向到 clicked-song.html
+            location.href = 'clicked-song.html';
+        })
+        .catch(error => {
+            console.error('There was a problem with the request:', error);
+            // 可以在這裡顯示錯誤信息或進行其他錯誤處理
+        });
+    }
 </script>
 
 </body>

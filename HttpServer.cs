@@ -150,34 +150,33 @@ namespace DualScreenDemo
                 Console.WriteLine("Handling POST request...");
                 // 检查是否是搜索请求或信号请求
                 string relativePath = context.Request.Url.AbsolutePath.Replace(String.Format("/{0}", randomFolderName), "");
-
-                if (relativePath == "/search")
+                Console.WriteLine("Received request for path: " + relativePath);
+                switch (relativePath)
                 {
-                    await HandleSearchRequest(context);
-                }
-                else if (relativePath == "/signal")
-                {
-                    await HandleSignalRequest(context);
-                }
-                else if (relativePath == "/sound-control")
-                {
-                    await HandleSoundControlRequest(context);
-                }
-                else if (relativePath == "/send-sticker")
-                {
-                    await HandleStickerRequest(context);
-                }
-                else if (relativePath == "/order-song")
-                {
-                    await HandleOrderSongRequest(context);
-                }
-                else if (relativePath == "/insert-song") // 添加对 /insert-song 的处理
-                {
-                    await HandleInsertSongRequest(context);
-                }
-                else
-                {
-                    // Handle other POST requests
+                    case "/search":
+                        await HandleSearchRequest(context);
+                        break;
+                    case "/signal":
+                        await HandleSignalRequest(context);
+                        break;
+                    case "/sound-control":
+                        await HandleSoundControlRequest(context);
+                        break;
+                    case "/send-sticker":
+                        await HandleStickerRequest(context);
+                        break;
+                    case "/order-song":
+                        await HandleOrderSongRequest(context);
+                        break;
+                    case "/insert-song": // 添加对 /insert-song 的处理
+                        await HandleInsertSongRequest(context);
+                        break;
+                    case "/ordered-song":
+                        await HandleOrderSongListRequest(context);
+                        break;
+                    default:
+                        // Handle other POST requests
+                        break;
                 }
             }
             else if (context.Request.HttpMethod == "GET")
@@ -502,7 +501,58 @@ namespace DualScreenDemo
                 await context.Response.OutputStream.WriteAsync(new byte[0], 0, 0);
             }
         }
+        private static async Task HandleOrderSongListRequest(HttpListenerContext context)
+        {
+            Console.WriteLine("Entered HandleOrderSongListRequest");
+            // try
+            // {
+            //     string requestBody;
+            //     using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
+            //     {
+            //         requestBody = await reader.ReadToEndAsync();
+            //     }
 
+            //     Console.WriteLine("Received order song request: " + requestBody);
+                
+            //     // 打印当前播放列表
+            //     PrimaryForm.PrintPlayingSongList();
+
+            //     var response = new
+            //     {
+            //         playingSongList = PrimaryForm.Instance.playingSongList?.Select(CreateSongResponse).ToList() ?? new List<object>(),
+            //         playedSongsHistory = PrimaryForm.playedSongsHistory?.Select(CreateSongResponse).ToList() ?? new List<object>(),
+            //         playStates = PrimaryForm.playStates,
+            //         currentSongIndexInHistory = PrimaryForm.currentSongIndexInHistory
+            //     };
+
+            //     string jsonResponse = JsonConvert.SerializeObject(response);
+            //     Console.WriteLine("Serialized JSON Response: " + jsonResponse);
+
+            //     context.Response.ContentType = "application/json";
+            //     context.Response.StatusCode = (int)HttpStatusCode.OK;
+            //     await SendResponseAsync(context, jsonResponse);
+            // }
+            // catch (Exception ex)
+            // {
+            //     Console.WriteLine("Error handling order song request: " + ex.Message);
+            //     context.Response.ContentType = "application/json"; 
+            //     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                
+            //     var errorResponse = new { status = "error", message = $"An error occurred: {ex.Message}, StackTrace: {ex.StackTrace}" };
+            //     await SendResponseAsync(context, JsonConvert.SerializeObject(errorResponse));
+            // }
+        }
+
+        private static object CreateSongResponse(SongData song)
+        {
+            return new
+            {
+                song.Song,
+                song.ArtistA,
+                song.SongFilePathHost1,
+                song.SongFilePathHost2
+            };
+        }
         private static async Task HandleOrderSongRequest(HttpListenerContext context)
         {
             try
