@@ -77,8 +77,6 @@ namespace DualScreenDemo
         private IMediaControl mediaControlSecondary;
         private static IBaseFilter videoRendererSecondary;
         private static IBaseFilter videoRendererPrimary;
-        private static VideoMixingRenderer9 vmr9Secondary;
-        private static VideoMixingRenderer9 vmr9Primary;
         private IBaseFilter lavSplitterPrimary;
         private IBaseFilter lavSplitterSecondary;
         private IBaseFilter lavVideoDecoderPrimary;
@@ -242,11 +240,9 @@ namespace DualScreenDemo
                 // 添加 LAV Video Decoder
                 lavVideoDecoderPrimary = AddFilterByClsid(graphBuilderPrimary, "LAV Video Decoder", Clsid.LAVVideoDecoder);
 
-                // 创建 VideoMixingRenderer9 实例
-                vmr9Primary = new VideoMixingRenderer9();
-
                 // 显式转换为 IBaseFilter 接口并添加到图形中
-                videoRendererPrimary = (IBaseFilter)vmr9Primary;
+                // 使用 AddFilterByClsid 方法來初始化 videoRendererPrimary
+                videoRendererPrimary = AddFilterByClsid(graphBuilderPrimary, "Primary Video Renderer", Clsid.VideoRenderer);
                 int hr = graphBuilderPrimary.AddFilter(videoRendererPrimary, "Primary Video Renderer");
                 DsError.ThrowExceptionForHR(hr);
 
@@ -297,11 +293,17 @@ namespace DualScreenDemo
                 // 获取输出引脑
                 outputPinSecondary = FindPin(lavAudioDecoderSecondary, "Output");
 
-                // 创建 VideoMixingRenderer9 实例
-                vmr9Secondary = new VideoMixingRenderer9();
+                // 初始化 videoRendererSecondary
+                videoRendererSecondary = AddFilterByClsid(graphBuilderSecondary, "Secondary Video Renderer", Clsid.VideoRenderer);
 
-                // 显式转换为 IBaseFilter 接口并添加到图形中
-                videoRendererSecondary = (IBaseFilter)vmr9Secondary;
+                // 檢查是否成功添加 videoRendererSecondary
+                if (videoRendererSecondary == null)
+                {
+                    Console.WriteLine("Failed to initialize Secondary Video Renderer.");
+                    return;
+                }
+
+                // 確保 videoRendererSecondary 已成功添加到 graphBuilderSecondary
                 int hr = graphBuilderSecondary.AddFilter(videoRendererSecondary, "Secondary Video Renderer");
                 DsError.ThrowExceptionForHR(hr);
 
@@ -509,13 +511,13 @@ namespace DualScreenDemo
             // 这里不需要停止和清理图形，只需要设置主屏幕的渲染器
             try
             {
-                if (vmr9Primary == null)
+                if (videoRendererPrimary == null)
                 {
                     Console.WriteLine("VMR9 is not initialized.");
                     return;
                 }
 
-                videoWindowPrimary = (IVideoWindow)vmr9Primary;
+                videoWindowPrimary = (IVideoWindow)videoRendererPrimary;
                 videoWindowPrimary.put_Owner(PrimaryForm.Instance.primaryScreenPanel.Handle); // 设置为 primaryScreenPanel 的句柄
                 videoWindowPrimary.put_WindowStyle(WindowStyle.Child | WindowStyle.ClipChildren);
                 videoWindowPrimary.SetWindowPosition(0, 0, 1210, 900);
@@ -815,7 +817,7 @@ namespace DualScreenDemo
                     return;
                 }
 
-                videoWindowSecondary = (IVideoWindow)vmr9Secondary;
+                videoWindowSecondary = (IVideoWindow)videoRendererSecondary;
 
                 // Set VMR9 window handle to second screen handle
 
@@ -921,7 +923,7 @@ namespace DualScreenDemo
                     return;
                 }
 
-                videoWindowSecondary = (IVideoWindow)vmr9Secondary;
+                videoWindowSecondary = (IVideoWindow)videoRendererSecondary;
 
                 // 设置 VMR9 窗口句柄为第二屏幕的句柄
                 videoWindowSecondary.put_Owner(this.Handle);  // 使用正确的 Handle
@@ -1011,24 +1013,6 @@ namespace DualScreenDemo
                     lavAudioDecoderSecondary = null;
                 }
 
-                // 释放 VMR9 渲染器
-                // if (vmr9Primary != null)
-                // {
-                //     Marshal.ReleaseComObject(vmr9Primary);
-                //     vmr9Primary = null;
-                // }
-                // if (vmr9Secondary != null)
-                // {
-                //     Marshal.ReleaseComObject(vmr9Secondary);
-                //     vmr9Secondary = null;
-                // }
-                
-                // 释放输出引脚
-                // if (outputPinPrimary != null)
-                // {
-                //     Marshal.ReleaseComObject(outputPinPrimary);
-                //     outputPinPrimary = null;
-                // }
                 if (outputPinSecondary != null)
                 {
                     Marshal.ReleaseComObject(outputPinSecondary);
@@ -1199,7 +1183,7 @@ namespace DualScreenDemo
                 DsError.ThrowExceptionForHR(hr);
 
                 // 配置视频窗口
-                videoWindowPrimary = (IVideoWindow)vmr9Primary;
+                videoWindowPrimary = (IVideoWindow)videoRendererPrimary;
                 videoWindowPrimary.put_Owner(PrimaryForm.Instance.primaryScreenPanel.Handle); // 设置为 primaryScreenPanel 的句柄
                 videoWindowPrimary.put_WindowStyle(WindowStyle.Child | WindowStyle.ClipChildren);
                 videoWindowPrimary.SetWindowPosition(0, 0, 1210, 900);

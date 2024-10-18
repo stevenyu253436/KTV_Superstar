@@ -1,10 +1,9 @@
 Filter: Default DirectSound Device
   Pin: Audio Input pin (rendered)
-Filter: Secondary Video Renderer
+Filter: Secondary Video Renderer 0001
   Pin: VMR Input0
-  Pin: VMR Input1
-  Pin: VMR Input2
-  Pin: VMR Input3
+Filter: Secondary Video Renderer 0001
+  Pin: VMR Input0
 Filter: LAV Audio Decoder
   Pin: Input
   Pin: Output
@@ -15,5 +14,5 @@ Filter: LAV Splitter
   Pin: Input
   Pin: Video
   Pin: Audio
-Filter: C:\video\100006-周湯豪-癢癢-國語-vL-100-11000000.mpg
+Filter: C:\video\CLOSE.mpg
   Pin: Output

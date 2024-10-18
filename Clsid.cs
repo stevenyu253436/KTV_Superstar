@@ -12,5 +12,6 @@ namespace DualScreenDemo
         public static readonly Guid DirectSoundAudioRenderer = new Guid("79376820-07D0-11CF-A24D-0020AFD79767");
         public static readonly Guid FileSourceAsync = new Guid("E436EBB5-524F-11CE-9F53-0020AF0BA770");
         public static readonly Guid InfinitePinTee = new Guid("F8388A40-D5BB-11D0-BE5A-0080C706568E");
+        public static readonly Guid VideoRenderer = new Guid("6BC1CFFA-8FC1-4261-AC22-CFB4CC38DB50"); // CLSID for Video Renderer
     }
 }
